@@ -1,0 +1,36 @@
+{
+    "name":        "wernerdweight/ra",
+    "type":        "library",
+    "description": "PHP Array object with consistent and predictable API",
+    "keywords":    [
+        "array",
+        "iterable",
+        "object"
+    ],
+    "homepage":    "https://github.com/wernerdweight/RA",
+    "license":     "MIT",
+
+    "authors": [
+        {
+            "name": "Werner Dweight",
+            "email": "wd@wernerdweight.com"
+        }
+    ],
+
+    "require": {
+        "php": ">=7.1.0"
+    },
+
+    "require-dev": {},
+
+    "suggest": {},
+
+    "autoload": {
+        "psr-0": {
+            "WernerDweight\\RA\\": ""
+        }
+    },
+
+    "target-dir": "WernerDweight/RA"
+
+}
