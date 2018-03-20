@@ -19,6 +19,25 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /** @var array $data */
     private $data;
 
+    // helpers
+
+    /**
+     * @param array $arrays
+     * @return array
+     */
+    private function convertArgumentsToPlainArrays(array $arrays): array
+    {
+        return array_map(function ($entry) {
+            if ($entry instanceof self) {
+                return $entry->toArray();
+            } else {
+                return $entry;
+            }
+        }, $arrays);
+    }
+
+    // magical
+
     /**
      * RA constructor.
      * @param array $data
@@ -62,22 +81,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
         return $this->data;
     }
 
-    /**
-     * @param array $arrays
-     * @return array
-     */
-    private function convertArgumentsToPlainArrays(array $arrays): array
-    {
-        return array_map(function ($entry) {
-            if ($entry instanceof self) {
-                return $entry->toArray();
-            } else {
-                return $entry;
-            }
-        }, $arrays);
-    }
 
-
+    // main
 
     /**
      * Whether a offset exists
@@ -189,7 +194,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param array ...$items
+     * @param mixed[] ...$items
      * @return RA
      */
     public function push(...$items): self
@@ -267,7 +272,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
     public function diffAssoc(...$args): self
@@ -276,7 +281,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
     public function diffKey(...$args): self
@@ -297,16 +302,16 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param (array|callable)[] ...$args
      * @return RA
      */
-    public function array_diff_ukey(...$args): self
+    public function diffUkey(...$args): self
     {
         return new self(array_diff_uassoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
-    public function array_diff(...$args): self
+    public function diff(...$args): self
     {
         return new self(array_diff(...$this->convertArgumentsToPlainArrays($args)));
     }
@@ -315,7 +320,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param $value
      * @return RA
      */
-    public function array_fill_keys($value): self
+    public function fillKeys($value): self
     {
         return new self(array_fill_keys($this->data, $value));
     }
@@ -351,7 +356,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
     public function intersectAssoc(...$args): self
@@ -360,10 +365,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
-    public function array_intersect_key(...$args): self
+    public function intersectKey(...$args): self
     {
         return new self(array_intersect_key($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
@@ -372,7 +377,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param (array|callable)[] ...$args
      * @return RA
      */
-    public function array_intersect_uassoc(...$args): self
+    public function intersectUassoc(...$args): self
     {
         return new self(array_intersect_uassoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
@@ -381,27 +386,18 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param (array|callable)[] ...$args
      * @return RA
      */
-    public function array_intersect_ukey(...$args): self
+    public function intersectUkey(...$args): self
     {
         return new self(array_intersect_ukey($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
-    public function array_intersect(...$args): self
+    public function intersect(...$args): self
     {
         return new self(array_intersect($this->data, ...$this->convertArgumentsToPlainArrays($args)));
-    }
-
-    /**
-     * @param $key
-     * @return bool
-     */
-    public function keyExists($key): bool
-    {
-        return $this->offsetExists($key);
     }
 
     /**
@@ -424,7 +420,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
     public function mergeRecursive(...$args): self
@@ -433,7 +429,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$arrays
+     * @param (array|RA)[] ...$args
      * @return RA
      */
     public function merge(...$args): self
@@ -463,7 +459,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $length
      * @return mixed|RA
      */
-    public function random(int $length)
+    public function random(int $length = 1)
     {
         $keys = array_rand($this->data, $length);
         if (true === is_array($keys)) {
@@ -570,7 +566,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (callback|array) ...$args
+     * @param (array|callable) ...$args
      * @return RA
      */
     public function udiffAssoc(...$args): self
@@ -579,7 +575,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (callback|array) ...$args
+     * @param (array|callable) ...$args
      * @return RA
      */
     public function udiffUassoc(...$args): self
@@ -588,7 +584,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (callback|array)[] ...$args
+     * @param (array|callable)[] ...$args
      * @return RA
      */
     public function udiff(...$args): self
@@ -597,300 +593,491 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     *
+     * @param (array|callable)[] ...$args
+     * @return RA
      */
-    public function array_uintersect_assoc()
+    public function uintersectAssoc(...$args): self
     {
-        //— Computes the intersection of arrays with additional index check, compares data by a callback function
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_uintersect_assoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param (array|callable)[] ...$args
+     * @return RA
      */
-    public function array_uintersect_uassoc()
+    public function uintersectUassoc(...$args): self
     {
-        //— Computes the intersection of arrays with additional index check, compares data and indexes by separate callback functions
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_uintersect_uassoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param (array|callable)[] ...$args
+     * @return RA
      */
-    public function array_uintersect()
+    public function uintersect(...$args): self
     {
-        //— Computes the intersection of arrays, compares data by a callback function
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_uintersect($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function array_unique()
+    public function unique(int $sortFlags = SORT_STRING): self
     {
-        //— Removes duplicate values from an array
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_unique($this->data, $sortFlags));
     }
 
     /**
-     *
+     * @param mixed[] ...$args
+     * @return RA
      */
-    public function array_unshift()
+    public function unshift(...$args): self
     {
-        //— Prepend one or more elements to the beginning of an array
-        throw new \RuntimeException('Not yet implemented');
+        array_unshift($this->data, ...$args);
+        return $this;
     }
 
     /**
-     *
+     * @return RA
      */
-    public function array_values()
+    public function values(): self
     {
-        //— Return all the values of an array
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_values($this->data));
     }
 
     /**
-     *
+     * @param callable $callback
+     * @param mixed|null $payload
+     * @return RA
      */
-    public function array_walk_recursive()
+    public function walkRecursive(callable $callback, $payload = null): self
     {
-        //— Apply a user function recursively to every member of an array
-        throw new \RuntimeException('Not yet implemented');
+        array_walk_recursive($this->data, $callback, $payload);
+        return $this;
     }
 
     /**
-     *
+     * @param callable $callback
+     * @param mied|null $payload
+     * @return RA
      */
-    public function array_walk()
+    public function walk(callable $callback, $payload = null): self
     {
-        //— Apply a user supplied function to every member of an array
-        throw new \RuntimeException('Not yet implemented');
+        array_walk($this->data, $callback, $payload);
+        return $this;
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function array()
+    public function arsort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Create an array
-        throw new \RuntimeException('Not yet implemented');
+        arsort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function arsort()
+    public function asort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Sort an array in reverse order and maintain index association
-        throw new \RuntimeException('Not yet implemented');
+        arsort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
-     */
-    public function asort()
-    {
-        //— Sort an array and maintain index association
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function compact()
-    {
-        //— Create array containing variables and their values
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function each()
-    {
-        //— Return the current key and value pair from an array and advance the array cursor
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
+     * @return mixed
      */
     public function end()
     {
-        //— Set the internal pointer of an array to its last element
-        throw new \RuntimeException('Not yet implemented');
+        return end($this->data);
     }
 
     /**
-     *
+     * @param mixed $needle
+     * @return bool
      */
-    public function extract()
+    public function contains($needle): bool
     {
-        //— Import variables into the current symbol table from an array
-        throw new \RuntimeException('Not yet implemented');
+        return is_array($needle, $this->data, true);
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function in_array()
+    public function krsort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Checks if a value exists in an array
-        throw new \RuntimeException('Not yet implemented');
+        krsort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function key_exists()
+    public function ksort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Alias of array_key_exists
-        throw new \RuntimeException('Not yet implemented');
+        ksort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
+     * @return RA
      */
-    public function krsort()
+    public function natcasesort(): self
     {
-        //— Sort an array by key in reverse order
-        throw new \RuntimeException('Not yet implemented');
+        natcasesort($this->data);
+        return $this;
     }
 
     /**
-     *
+     * @return RA
      */
-    public function ksort()
+    public function natsort(): self
     {
-        //— Sort an array by key
-        throw new \RuntimeException('Not yet implemented');
+        natsort($this->data);
+        return $this;
     }
 
     /**
-     *
-     */
-    public function list()
-    {
-        //— Assign variables as if they were an array
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function natcasesort()
-    {
-        //— Sort an array using a case insensitive "natural order" algorithm
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function natsort()
-    {
-        //— Sort an array using a "natural order" algorithm
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function pos()
-    {
-        //— Alias of current
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
+     * @return mixed
      */
     public function prev()
     {
-        //— Rewind the internal array pointer
-        throw new \RuntimeException('Not yet implemented');
+        return prev($this->data);
     }
 
     /**
-     *
+     * @param $start
+     * @param $end
+     * @param int $step
+     * @return RA
      */
-    public function range()
+    public function range($start, $end, $step = 1): self
     {
-        //— Create an array containing a range of elements
-        throw new \RuntimeException('Not yet implemented');
+        $this->data = range($start, $end, $step);
+        return $this;
     }
 
     /**
-     *
+     * @return mixed
      */
     public function reset()
     {
-        //— Set the internal pointer of an array to its first element
-        throw new \RuntimeException('Not yet implemented');
+        return reset($this->data);
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function rsort()
+    public function rsort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Sort an array in reverse order
-        throw new \RuntimeException('Not yet implemented');
+        rsort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
+     * @return RA
      */
-    public function shuffle()
+    public function shuffle(): self
     {
-        //— Shuffle an array
-        throw new \RuntimeException('Not yet implemented');
+        shuffle($this->data);
+        return $this;
     }
 
     /**
-     *
+     * @param int $sortFlags
+     * @return RA
      */
-    public function sizeof()
+    public function sort(int $sortFlags = SORT_REGULAR): self
     {
-        //— Alias of count
-        throw new \RuntimeException('Not yet implemented');
+        sort($this->data, $sortFlags);
+        return $this;
     }
 
     /**
-     *
+     * @param callable $callback
+     * @return RA
      */
-    public function sort()
+    public function uasort(callable $callback): self
     {
-        //— Sort an array
-        throw new \RuntimeException('Not yet implemented');
+        uasort($this->data, $callback);
+        return $this;
     }
 
     /**
-     *
+     * @param callable $callback
+     * @return RA
      */
-    public function uasort()
+    public function uksort(callable $callback): self
     {
-        //— Sort an array with a user-defined comparison function and maintain index association
-        throw new \RuntimeException('Not yet implemented');
+        uksort($this->data, $callback);
+        return $this;
     }
 
     /**
-     *
+     * @param callable $callback
+     * @return RA
      */
-    public function uksort()
+    public function usort(callable $callback): self
     {
-        //— Sort an array by keys using a user-defined comparison function
-        throw new \RuntimeException('Not yet implemented');
+        usort($this->data, $callback);
+        return $this;
+    }
+
+    // Aliases
+
+    /**
+     * @param mixed $key
+     * @return bool
+     */
+    public function keyExists($key): bool
+    {
+        return $this->offsetExists($key);
     }
 
     /**
-     *
+     * @param mixed $needle
+     * @return bool
      */
-    public function usort()
+    public function has($needle): bool
     {
-        //— Sort an array by values using a user-defined comparison function
-        throw new \RuntimeException('Not yet implemented');
+        return $this->contains($needle);
+    }
+
+    /**
+     * @param mixed $needle
+     * @return bool
+     */
+    public function hasValue($needle): bool
+    {
+        return $this->contains($needle);
+    }
+
+    /**
+     * @param mixed $key
+     * @return bool
+     */
+    public function hasKey($key): bool
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pos()
+    {
+        return $this->current();
+    }
+
+    /**
+     * @return int
+     */
+    public function size(): int
+    {
+        return $this->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function length(): int
+    {
+        return $this->count();
+    }
+
+    /**
+     * @param mixed $offset
+     * @return mixed
+     * @throws RAException
+     */
+    public function get($offset = null)
+    {
+        if (null === $offset) {
+            return $this->current();
+        } else {
+            return $this->offsetGet($offset);
+        }
+    }
+
+    /**
+     * @param $offset
+     * @param $value
+     * @return RA
+     */
+    public function set($offset, $value): self
+    {
+        return $this->offsetSet($offset, $value);
+    }
+
+    /**
+     * @param $offset
+     * @return RA
+     * @throws RAException
+     */
+    public function unset($offset): self
+    {
+        return $this->offsetUnset($offset);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function previous()
+    {
+        return $this->prev();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentIndex()
+    {
+        return $this->key();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrenKey()
+    {
+        return $this->key();
+    }
+
+    /**
+     * @param mixed[] ...$items
+     * @return RA
+     */
+    public function append(...$items): self
+    {
+        return $this->push($items);
+    }
+
+    /**
+     * @return RA
+     */
+    public function aggregateValues(): self
+    {
+        return $this->countValues();
+    }
+
+    /**
+     * @return RA
+     */
+    public function getKeys(): self
+    {
+        return $this->keys();
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getProduct()
+    {
+        return $this->product();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandomEntry()
+    {
+        return $this->random();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandomValue()
+    {
+        return $this->random();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandomItem()
+    {
+        return $this->random();
+    }
+
+    /**
+     * @param mixed $needle
+     * @return mixed|null
+     */
+    public function find($needle)
+    {
+        return $this->search($needle);
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getSum()
+    {
+        return $this->sum();
+    }
+
+    /**
+     * @return RA
+     */
+    public function getValues(): self
+    {
+        return $this->values();
+    }
+
+    /**
+     * @return RA
+     */
+    public function entries(): self
+    {
+        return $this->values();
+    }
+
+    /**
+     * @return RA
+     */
+    public function getEntries(): self
+    {
+        return $this->values();
+    }
+
+    /**
+     * @return RA
+     */
+    public function items(): self
+    {
+        return $this->values();
+    }
+
+    /**
+     * @return RA
+     */
+    public function getItems(): self
+    {
+        return $this->values();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function first()
+    {
+        return $this->reset();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function last()
+    {
+        return $this->end();
     }
 
 }
