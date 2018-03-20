@@ -442,156 +442,158 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     *
+     * @param int $size
+     * @param $value
+     * @return RA
      */
-    public function array_pad()
+    public function pad(int $size, $value): self
     {
-        //— Pad array to the specified length with a value
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_pad($this->data, $size, $value));
     }
 
     /**
-     *
+     * @return float|int
      */
-    public function array_pop()
+    public function product()
     {
-        //— Pop the element off the end of array
-        throw new \RuntimeException('Not yet implemented');
+        return array_product($this->data);
     }
 
     /**
-     *
+     * @param int $length
+     * @return mixed|RA
      */
-    public function array_product()
+    public function random(int $length)
     {
-        //— Calculate the product of values in an array
-        throw new \RuntimeException('Not yet implemented');
+        $keys = array_rand($this->data, $length);
+        if (true === is_array($keys)) {
+            return new self(array_map(function ($key) {
+                return $this->data[$key];
+            }, $keys));
+        } else {
+            return $this->data[$keys];
+        }
     }
 
     /**
-     *
+     * @param callable $callback
+     * @param mixed|null $initial
+     * @return mixed
      */
-    public function array_push()
+    public function reduce(callable $callback, $initial = null)
     {
-        //— Push one or more elements onto the end of array
-        throw new \RuntimeException('Not yet implemented');
+        return array_reduce($this->data, $callback, $initial);
     }
 
     /**
-     *
+     * @param array ...$args
+     * @return RA
      */
-    public function array_rand()
+    public function replaceRecursive(...$args): self
     {
-        //— Pick one or more random entries out of an array
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_replace_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param array ...$args
+     * @return RA
      */
-    public function array_reduce()
+    public function replace(...$args): self
     {
-        //— Iteratively reduce the array to a single value using a callback function
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @return RA
      */
-    public function array_replace_recursive()
+    public function reverse(): self
     {
-        //— Replaces elements from passed arrays into the first array recursively
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_reverse($this->data));
     }
 
     /**
-     *
+     * @param $needle
+     * @return mixed|null
      */
-    public function array_replace()
+    public function search($needle)
     {
-        //— Replaces elements from passed arrays into the first array
-        throw new \RuntimeException('Not yet implemented');
+        $key = array_search($needle, $this->data, true);
+        if (false !== $key) {
+            return $this->data[$key];
+        } else {
+            return null;
+        }
     }
 
     /**
-     *
+     * @return mixed
      */
-    public function array_reverse()
+    public function shift()
     {
-        //— Return an array with elements in reverse order
-        throw new \RuntimeException('Not yet implemented');
+        return array_shift($this->data);
     }
 
     /**
-     *
+     * @param int $offset
+     * @param int|null $length
+     * @param bool $preserveKeys
+     * @return RA
      */
-    public function array_search()
+    public function slice(int $offset, int $length = null, $preserveKeys = false): self
     {
-        //— Searches the array for a given value and returns the first corresponding key if successful
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_slice($this->data, $offset, $length, $preserveKeys));
     }
 
     /**
-     *
+     * @param int $offset
+     * @param int|null $length
+     * @param mixed|null $replacement
+     * @return RA
      */
-    public function array_shift()
+    public function splice(int $offset, int $length = null, $replacement = null): self
     {
-        //— Shift an element off the beginning of array
-        throw new \RuntimeException('Not yet implemented');
+        if (null === $length) {
+            $length = $this->count();
+        }
+        if (null === $replacement) {
+            $replacement = [];
+        }
+        return new self(array_splice($this->data, $offset, $length, $replacement));
     }
 
     /**
-     *
+     * @return float|int
      */
-    public function array_slice()
+    public function sum()
     {
-        //— Extract a slice of the array
-        throw new \RuntimeException('Not yet implemented');
+        return array_sum($this->data);
     }
 
     /**
-     *
+     * @param (callback|array) ...$args
+     * @return RA
      */
-    public function array_splice()
+    public function udiffAssoc(...$args): self
     {
-        //— Remove a portion of the array and replace it with something else
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_udiff_assoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param (callback|array) ...$args
+     * @return RA
      */
-    public function array_sum()
+    public function udiffUassoc(...$args): self
     {
-        //— Calculate the sum of values in an array
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_udiff_uassoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
-     *
+     * @param (callback|array)[] ...$args
+     * @return RA
      */
-    public function array_udiff_assoc()
+    public function udiff(...$args): self
     {
-        //— Computes the difference of arrays with additional index check, compares data by a callback function
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function array_udiff_uassoc()
-    {
-        //— Computes the difference of arrays with additional index check, compares data and indexes by a callback function
-        throw new \RuntimeException('Not yet implemented');
-    }
-
-    /**
-     *
-     */
-    public function array_udiff()
-    {
-        //— Computes the difference of arrays by using a callback function for data comparison
-        throw new \RuntimeException('Not yet implemented');
+        return new self(array_udiff($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
