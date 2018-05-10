@@ -407,7 +407,12 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function keys($searchValue = null, bool $strict = false): self
     {
-        return new self(array_keys($this->data, $searchValue, $strict));
+        $args[] = $this->data;
+        if (null !== $searchValue) {
+            $args[] = $searchValue;
+            $args[] = $strict;
+        }
+        return new self(array_keys(...$args));
     }
 
     /**
