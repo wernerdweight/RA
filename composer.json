@@ -1,36 +1,38 @@
 {
-    "name":        "wernerdweight/ra",
-    "type":        "library",
+    "name": "wernerdweight/ra",
+    "type": "library",
     "description": "PHP Array object with consistent and predictable API",
-    "keywords":    [
+    "keywords": [
         "array",
         "iterable",
         "object"
     ],
-    "homepage":    "https://github.com/wernerdweight/RA",
-    "license":     "MIT",
-
+    "homepage": "https://github.com/wernerdweight/RA",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Werner Dweight",
-            "email": "wd@wernerdweight.com"
+            "name": "Werner Dweight Solutions",
+            "email": "info@wds.blue"
         }
     ],
-
     "require": {
         "php": ">=7.1.0"
     },
-
-    "require-dev": {},
-
+    "require-dev": {
+        "wernerdweight/cs": "~0"
+    },
     "suggest": {},
-
     "autoload": {
         "psr-0": {
             "WernerDweight\\RA\\": ""
         }
     },
-
-    "target-dir": "WernerDweight/RA"
-
+    "target-dir": "WernerDweight/RA",
+    "scripts": {
+        "fixall": "phpcbf --standard=vendor/wernerdweight/cs/WernerDweight/CS/src/ruleset.xml --colors --extensions=php --encoding=utf-8 --tab-width=4 -sp Exception/ Tests/ RA.php; ./vendor/bin/php-cs-fixer fix --config=vendor/wernerdweight/cs/WernerDweight/CS/.php_cs.dist --verbose --diff Exception/ Tests/ RA.php",
+        "phpstan": "phpstan analyse Exception/ Tests/ RA.php --level max",
+        "phpcs": "phpcs --standard=vendor/wernerdweight/cs/WernerDweight/CS/src/ruleset.xml --colors --extensions=php --encoding=utf-8 --tab-width=4 -sp Exception/ Tests/ RA.php",
+        "phpcs-fix": "php-cs-fixer fix --config=vendor/wernerdweight/cs/WernerDweight/CS/.php_cs.dist --dry-run --verbose --diff Exception/ Tests/ RA.php",
+        "phpunit": "phpunit --colors=always"
+    }
 }
