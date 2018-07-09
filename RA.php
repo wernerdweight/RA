@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace WernerDweight\RA;
@@ -61,7 +60,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function __isset(string $name): bool
     {
-        return isset($name, $this->data);
+        return isset($this->data[$name]);
     }
 
     /**
@@ -81,13 +80,12 @@ class RA implements \Countable, \ArrayAccess, \Iterator
         return $this->data;
     }
 
-
     // main
 
     /**
-     * Whether a offset exists
+     * Whether a offset exists.
      * @param mixed $offset
-     * @return boolean true on success or false on failure.
+     * @return bool true on success or false on failure
      */
     public function offsetExists($offset): bool
     {
@@ -95,7 +93,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Offset to retrieve
+     * Offset to retrieve.
      * @param mixed $offset
      * @return mixed
      * @throws RAException
@@ -110,7 +108,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Offset to set
+     * Offset to set.
      * @param mixed $offset
      * @param mixed $value
      * @return RA
@@ -122,7 +120,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Offset to unset
+     * Offset to unset.
      * @param mixed $offset
      * @return RA
      * @throws RAException
@@ -138,7 +136,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Count elements of an object
+     * Count elements of an object.
      * @return int
      */
     public function count(): int
@@ -147,7 +145,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Return the current element
+     * Return the current element.
      * @return mixed
      */
     public function current()
@@ -156,7 +154,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Move forward to next element
+     * Move forward to next element.
      * @return mixed
      */
     public function next()
@@ -165,7 +163,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Return the key of the current element
+     * Return the key of the current element.
      * @return mixed
      */
     public function key()
@@ -174,8 +172,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Checks if current position is valid
-     * @return boolean true on success or false on failure.
+     * Checks if current position is valid.
+     * @return bool true on success or false on failure
      */
     public function valid(): bool
     {
@@ -184,7 +182,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
+     * Rewind the Iterator to the first element.
      * @return RA
      */
     public function rewind(): self
@@ -229,7 +227,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     {
         return new self(
             array_map(
-                function(array $chunk) {
+                function (array $chunk) {
                     return new self($chunk);
                 },
                 array_chunk($this->data, $size, $preserveKeys)
@@ -317,7 +315,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return RA
      */
     public function fillKeys($value): self
@@ -328,7 +326,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param int $startIndex
      * @param int $num
-     * @param $value
+     * @param mixed $value
      * @return RA
      */
     public function fill(int $startIndex, int $num, $value): self
@@ -401,7 +399,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param null $searchValue
+     * @param mixed|null $searchValue
      * @param bool $strict
      * @return RA
      */
@@ -444,7 +442,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $size
-     * @param $value
+     * @param mixed $value
      * @return RA
      */
     public function pad(int $size, $value): self
@@ -513,7 +511,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $needle
+     * @param mixed $needle
      * @return mixed|null
      */
     public function search($needle)
@@ -540,7 +538,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param bool $preserveKeys
      * @return RA
      */
-    public function slice(int $offset, int $length = null, $preserveKeys = false): self
+    public function slice(int $offset, ?int $length = null, $preserveKeys = false): self
     {
         return new self(array_slice($this->data, $offset, $length, $preserveKeys));
     }
@@ -551,7 +549,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param mixed|null $replacement
      * @return RA
      */
-    public function splice(int $offset, int $length = null, $replacement = null): self
+    public function splice(int $offset, ?int $length = null, $replacement = null): self
     {
         if (null === $length) {
             $length = $this->count();
@@ -664,7 +662,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
-     * @param mied|null $payload
+     * @param mixed|null $payload
      * @return RA
      */
     public function walk(callable $callback, $payload = null): self
@@ -707,7 +705,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function contains($needle): bool
     {
-        return is_array($needle, $this->data, true);
+        return in_array($needle, $this->data, true);
     }
 
     /**
@@ -757,8 +755,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $start
-     * @param $end
+     * @param mixed $start
+     * @param mixed $end
      * @param int $step
      * @return RA
      */
@@ -912,8 +910,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
-     * @param $value
+     * @param mixed $offset
+     * @param mixed $value
      * @return RA
      */
     public function set($offset, $value): self
@@ -922,7 +920,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return RA
      * @throws RAException
      */
@@ -1084,5 +1082,4 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     {
         return $this->end();
     }
-
 }

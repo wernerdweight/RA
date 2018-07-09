@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace WernerDweight\RA\Exception;
@@ -14,7 +13,7 @@ class RAException extends \Exception implements \Throwable
 
     /**
      * @param int $code
-     * @param string[] $payload
+     * @param string ...$payload
      * @return RAException
      */
     public static function create(int $code, string ...$payload): RAException
