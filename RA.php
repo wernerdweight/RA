@@ -42,7 +42,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param array $data
      * @param bool $recursive
      */
-    public function __construct(array $data, bool $recursive = self::REGULAR)
+    public function __construct(array $data = [], bool $recursive = self::REGULAR)
     {
         $this->data = $data;
         if (self::RECURSIVE === $recursive) {
@@ -52,6 +52,15 @@ class RA implements \Countable, \ArrayAccess, \Iterator
                 }
             }
         }
+    }
+
+    /**
+     * @param string $name
+     * @param $value
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->data[$name] = $value;
     }
 
     /**
@@ -66,18 +75,49 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param string $name
      * @return mixed
+     * @throws RAException
      */
     public function __get(string $name)
     {
-        return $this->data[$name];
+        if (true !== $this->offsetExists($name)) {
+            throw RAException::create(RAException::INVALID_OFFSET, (string)$name);
+        } else {
+            return $this->data[$name];
+        }
     }
 
     /**
+     * @param string $name
+     * @throws RAException
+     */
+    public function __unset(string $name): void
+    {
+        if (true !== $this->offsetExists($name)) {
+            throw RAException::create(RAException::INVALID_OFFSET, (string)$name);
+        } else {
+            unset($this->data[$name]);
+        }
+    }
+
+    /**
+     * @param bool $recursive
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $recursive = self::REGULAR): array
     {
-        return $this->data;
+        if (self::RECURSIVE === $recursive) {
+            $data = [];
+            foreach ($this->data as $key => $value) {
+                if ($value instanceof self) {
+                    $data[$key] = $value->toArray($recursive);
+                } else {
+                    $data[$key] = $value;
+                }
+            }
+            return $data;
+        } else {
+            return $this->data;
+        }
     }
 
     // main
