@@ -3,6 +3,8 @@ RA
 
 PHP Array object with consistent, predictable and convenient API
 
+[![Build Status](https://travis-ci.org/wernerdweight/RA.svg?branch=master)](https://travis-ci.org/wernerdweight/RA)
+
 Instalation
 --
 
