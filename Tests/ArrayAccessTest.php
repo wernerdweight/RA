@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests;
+namespace WernerDweight\RA\Tests;
 
 use PHPUnit\Framework\TestCase;
 use WernerDweight\RA\Exception\RAException;
@@ -51,12 +51,17 @@ class ArrayAccessTest extends TestCase
         $ra = new RA(['a' => 'test']);
         $this->assertTrue($ra->offsetExists('a'));
         $this->assertFalse($ra->offsetExists('b'));
+        $this->assertTrue($ra->keyExists('a'));
+        $this->assertFalse($ra->keyExists('b'));
+        $this->assertTrue($ra->hasKey('a'));
+        $this->assertFalse($ra->hasKey('b'));
     }
 
     public function testOffsetGet(): void
     {
         $ra = new RA(['a' => 'test']);
         $this->assertSame('test', $ra->offsetGet('a'));
+        $this->assertSame('test', $ra->get('a'));
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
         $ra->offsetGet('b');
@@ -68,13 +73,19 @@ class ArrayAccessTest extends TestCase
         $ra->offsetSet('a', 'test');
         $this->assertTrue($ra->offsetExists('a'));
         $this->assertSame('test', $ra->offsetGet('a'));
+        $ra->set('b', 'test');
+        $this->assertTrue($ra->offsetExists('b'));
+        $this->assertSame('test', $ra->offsetGet('b'));
     }
 
     public function testOffsetUnset(): void
     {
-        $ra = new RA(['a' => 'test']);
+        $ra = new RA(['a' => 'test', 'b' => 'test']);
         $this->assertTrue($ra->offsetExists('a'));
+        $this->assertTrue($ra->offsetExists('b'));
         $ra->offsetUnset('a');
+        $ra->unset('b');
+        $this->assertFalse($ra->offsetExists('a'));
         $this->assertFalse($ra->offsetExists('b'));
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);

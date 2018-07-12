@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests;
+namespace WernerDweight\RA\Tests;
 
 use PHPUnit\Framework\TestCase;
 use WernerDweight\RA\RA;

@@ -20,11 +20,10 @@ class PresenceTest extends TestCase
         $this->assertFalse(isset($ra2[0]));
         $this->assertTrue(isset($ra2['a']));
         $this->assertFalse(isset($ra2['b']));
-        $this->assertSame('test', $ra2->a);
 
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
-        $ra2->b;
+        $ra2['b'];
     }
 
     public function testPresence2(): void
@@ -34,7 +33,7 @@ class PresenceTest extends TestCase
         unset($ra['a']);
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
-        $ra->a;
+        $ra['a'];
     }
 
     public function testPresence3(): void
@@ -51,8 +50,7 @@ class PresenceTest extends TestCase
     {
         $ra = new RA(['a' => 'test']);
 
-        $ra->b = 'test2';
+        $ra['b'] = 'test2';
         $this->assertSame('test2', $ra['b']);
-        $this->assertSame('test2', $ra->b);
     }
 }

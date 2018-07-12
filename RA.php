@@ -56,7 +56,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param string $name
-     * @param $value
+     * @param mixed $value
      */
     public function __set(string $name, $value): void
     {
@@ -80,7 +80,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     public function __get(string $name)
     {
         if (true !== $this->offsetExists($name)) {
-            throw RAException::create(RAException::INVALID_OFFSET, (string)$name);
+            throw RAException::create(RAException::INVALID_OFFSET, $name);
         } else {
             return $this->data[$name];
         }
@@ -93,7 +93,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     public function __unset(string $name): void
     {
         if (true !== $this->offsetExists($name)) {
-            throw RAException::create(RAException::INVALID_OFFSET, (string)$name);
+            throw RAException::create(RAException::INVALID_OFFSET, $name);
         } else {
             unset($this->data[$name]);
         }
@@ -328,7 +328,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function diffUassoc(...$args): self
@@ -337,7 +337,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function diffUkey(...$args): self
@@ -351,7 +351,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function diff(...$args): self
     {
-        return new self(array_diff(...$this->convertArgumentsToPlainArrays($args)));
+        return new self(array_diff($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
@@ -412,7 +412,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function intersectUassoc(...$args): self
@@ -421,7 +421,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function intersectUkey(...$args): self
@@ -468,7 +468,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function mergeRecursive(...$args): self
     {
-        return new self(array_merge_recursive(...$this->convertArgumentsToPlainArrays($args)));
+        return new self(array_merge_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
@@ -477,7 +477,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function merge(...$args): self
     {
-        return new self(array_merge(...$this->convertArgumentsToPlainArrays($args)));
+        return new self(array_merge($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
@@ -609,7 +609,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable) ...$args
+     * @param (RA|array|callable) ...$args
      * @return RA
      */
     public function udiffAssoc(...$args): self
@@ -618,7 +618,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable) ...$args
+     * @param (RA|array|callable) ...$args
      * @return RA
      */
     public function udiffUassoc(...$args): self
@@ -627,7 +627,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function udiff(...$args): self
@@ -636,7 +636,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function uintersectAssoc(...$args): self
@@ -645,7 +645,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function uintersectUassoc(...$args): self
@@ -654,7 +654,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|callable)[] ...$args
+     * @param (RA|array|callable)[] ...$args
      * @return RA
      */
     public function uintersect(...$args): self
@@ -727,7 +727,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function asort(int $sortFlags = SORT_REGULAR): self
     {
-        arsort($this->data, $sortFlags);
+        asort($this->data, $sortFlags);
         return $this;
     }
 
@@ -988,7 +988,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @return mixed
      */
-    public function getCurrenKey()
+    public function getCurrentKey()
     {
         return $this->key();
     }
@@ -999,7 +999,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function append(...$items): self
     {
-        return $this->push($items);
+        return $this->push(...$items);
     }
 
     /**
