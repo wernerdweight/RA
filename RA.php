@@ -35,6 +35,198 @@ class RA implements \Countable, \ArrayAccess, \Iterator
         }, $arrays);
     }
 
+    /**
+     * @param $offset
+     * @return bool
+     * @throws RAException
+     */
+    public function getBool($offset): bool
+    {
+        /** @var bool $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return bool|null
+     * @throws RAException
+     */
+    public function getBoolOrNull($offset): ?bool
+    {
+        /** @var null|bool $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return int
+     * @throws RAException
+     */
+    public function getInt($offset): int
+    {
+        /** @var int $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return int|null
+     * @throws RAException
+     */
+    public function getIntOrNull($offset): ?int
+    {
+        /** @var null|int $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return float
+     * @throws RAException
+     */
+    public function getFloat($offset): float
+    {
+        /** @var float $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return float|null
+     * @throws RAException
+     */
+    public function getFloatOrNull($offset): ?float
+    {
+        /** @var null|float $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return string
+     * @throws RAException
+     */
+    public function getString($offset): string
+    {
+        /** @var string $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return string|null
+     * @throws RAException
+     */
+    public function getStringOrNull($offset): ?string
+    {
+        /** @var null|string $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return array
+     * @throws RAException
+     */
+    public function getArray($offset): array
+    {
+        /** @var array $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return array|null
+     * @throws RAException
+     */
+    public function getArrayOrNull($offset): ?array
+    {
+        /** @var null|array $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return RA
+     * @throws RAException
+     */
+    public function getRA($offset): self
+    {
+        /** @var RA $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return RA|null
+     * @throws RAException
+     */
+    public function getRAOrNull($offset): ?RA
+    {
+        /** @var null|RA $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return callable
+     * @throws RAException
+     */
+    public function getCallable($offset): callable
+    {
+        /** @var callable $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return callable|null
+     * @throws RAException
+     */
+    public function getCallableOrNull($offset): ?callable
+    {
+        /** @var null|int $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return iterable
+     * @throws RAException
+     */
+    public function getIterable($offset): iterable
+    {
+        /** @var iterable $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @param $offset
+     * @return iterable|null
+     * @throws RAException
+     */
+    public function getIterableOrNull($offset): ?iterable
+    {
+        /** @var null|iterable $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
     // magical
 
     /**
