@@ -10,7 +10,12 @@ class IteratorTest extends TestCase
 {
     public function testIterator(): void
     {
-        $ra = new RA(['a' => 'test1', 'b' => 'test2', 'c' => 'test3', 'd' => 'test4']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => 'test3',
+            'd' => 'test4',
+        ]);
 
         $keys = [];
         $values = [];

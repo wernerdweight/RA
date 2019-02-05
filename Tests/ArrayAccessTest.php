@@ -11,21 +11,41 @@ class ArrayAccessTest extends TestCase
 {
     public function testToArray(): void
     {
-        $regularRa = new RA(['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', ['test5', 'test6']]], RA::REGULAR);
-        $recursiveRa = new RA(['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', ['test5', 'test6']]], RA::RECURSIVE);
+        $regularRa = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => ['test3', 'test4', ['test5', 'test6']],
+        ], RA::REGULAR);
+        $recursiveRa = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => ['test3', 'test4', ['test5', 'test6']],
+        ], RA::RECURSIVE);
 
         $this->assertInternalType('array', $regularRa['c']);
         $this->assertSame(RA::class, get_class($recursiveRa['c']));
         $this->assertSame(
-            ['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', ['test5', 'test6']]],
+            [
+                'a' => 'test1',
+                'b' => 'test2',
+                'c' => ['test3', 'test4', ['test5', 'test6']],
+            ],
             $regularRa->toArray()
         );
         $this->assertNotSame(
-            ['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', ['test5', 'test6']]],
+            [
+                'a' => 'test1',
+                'b' => 'test2',
+                'c' => ['test3', 'test4', ['test5', 'test6']],
+            ],
             $recursiveRa->toArray()
         );
         $this->assertSame(
-            ['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', ['test5', 'test6']]],
+            [
+                'a' => 'test1',
+                'b' => 'test2',
+                'c' => ['test3', 'test4', ['test5', 'test6']],
+            ],
             $recursiveRa->toArray(RA::RECURSIVE)
         );
 
@@ -80,7 +100,10 @@ class ArrayAccessTest extends TestCase
 
     public function testOffsetUnset(): void
     {
-        $ra = new RA(['a' => 'test', 'b' => 'test']);
+        $ra = new RA([
+            'a' => 'test',
+            'b' => 'test',
+        ]);
         $this->assertTrue($ra->offsetExists('a'));
         $this->assertTrue($ra->offsetExists('b'));
         $ra->offsetUnset('a');

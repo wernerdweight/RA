@@ -5,7 +5,7 @@ namespace WernerDweight\RA;
 
 use WernerDweight\RA\Exception\RAException;
 
-class RA implements \Countable, \ArrayAccess, \Iterator
+final class RA implements \Countable, \ArrayAccess, \Iterator
 {
     public const RECURSIVE = true;
     public const REGULAR = false;
@@ -15,13 +15,14 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     public const ARRAY_FILTER_VALUE = 0;
 
-    /** @var array $data */
-    private $data;
+    /** @var array */
+    private $data = [];
 
     // helpers
 
     /**
      * @param array $arrays
+     *
      * @return array
      */
     private function convertArgumentsToPlainArrays(array $arrays): array
@@ -37,7 +38,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return bool
+     *
      * @throws RAException
      */
     public function getBool($offset): bool
@@ -49,7 +52,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return bool|null
+     *
      * @throws RAException
      */
     public function getBoolOrNull($offset): ?bool
@@ -61,7 +66,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return int
+     *
      * @throws RAException
      */
     public function getInt($offset): int
@@ -73,7 +80,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return int|null
+     *
      * @throws RAException
      */
     public function getIntOrNull($offset): ?int
@@ -85,7 +94,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return float
+     *
      * @throws RAException
      */
     public function getFloat($offset): float
@@ -97,7 +108,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return float|null
+     *
      * @throws RAException
      */
     public function getFloatOrNull($offset): ?float
@@ -109,7 +122,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return string
+     *
      * @throws RAException
      */
     public function getString($offset): string
@@ -121,7 +136,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return string|null
+     *
      * @throws RAException
      */
     public function getStringOrNull($offset): ?string
@@ -133,7 +150,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return array
+     *
      * @throws RAException
      */
     public function getArray($offset): array
@@ -145,7 +164,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return array|null
+     *
      * @throws RAException
      */
     public function getArrayOrNull($offset): ?array
@@ -157,7 +178,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return RA
+     *
      * @throws RAException
      */
     public function getRA($offset): self
@@ -169,10 +192,12 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return RA|null
+     *
      * @throws RAException
      */
-    public function getRAOrNull($offset): ?RA
+    public function getRAOrNull($offset): ?self
     {
         /** @var null|RA $value */
         $value = $this->get($offset);
@@ -181,7 +206,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return callable
+     *
      * @throws RAException
      */
     public function getCallable($offset): callable
@@ -193,7 +220,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return callable|null
+     *
      * @throws RAException
      */
     public function getCallableOrNull($offset): ?callable
@@ -205,7 +234,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return iterable
+     *
      * @throws RAException
      */
     public function getIterable($offset): iterable
@@ -217,7 +248,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return iterable|null
+     *
      * @throws RAException
      */
     public function getIterableOrNull($offset): ?iterable
@@ -231,8 +264,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * RA constructor.
+     *
      * @param array $data
-     * @param bool $recursive
+     * @param bool  $recursive
      */
     public function __construct(array $data = [], bool $recursive = self::REGULAR)
     {
@@ -248,7 +282,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set(string $name, $value): void
     {
@@ -257,6 +291,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function __isset(string $name): bool
@@ -266,7 +301,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param string $name
+     *
      * @return mixed
+     *
      * @throws RAException
      */
     public function __get(string $name)
@@ -280,6 +317,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param string $name
+     *
      * @throws RAException
      */
     public function __unset(string $name): void
@@ -293,6 +331,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param bool $recursive
+     *
      * @return array
      */
     public function toArray(bool $recursive = self::REGULAR): array
@@ -316,7 +355,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Whether a offset exists.
+     *
      * @param mixed $offset
+     *
      * @return bool true on success or false on failure
      */
     public function offsetExists($offset): bool
@@ -326,8 +367,11 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Offset to retrieve.
+     *
      * @param mixed $offset
+     *
      * @return mixed
+     *
      * @throws RAException
      */
     public function offsetGet($offset)
@@ -341,8 +385,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Offset to set.
+     *
      * @param mixed $offset
      * @param mixed $value
+     *
      * @return RA
      */
     public function offsetSet($offset, $value)
@@ -353,8 +399,11 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Offset to unset.
+     *
      * @param mixed $offset
+     *
      * @return RA
+     *
      * @throws RAException
      */
     public function offsetUnset($offset)
@@ -369,6 +418,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Count elements of an object.
+     *
      * @return int
      */
     public function count(): int
@@ -378,6 +428,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Return the current element.
+     *
      * @return mixed
      */
     public function current()
@@ -387,6 +438,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Move forward to next element.
+     *
      * @return mixed
      */
     public function next()
@@ -396,6 +448,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Return the key of the current element.
+     *
      * @return mixed
      */
     public function key()
@@ -405,6 +458,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Checks if current position is valid.
+     *
      * @return bool true on success or false on failure
      */
     public function valid(): bool
@@ -415,6 +469,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Rewind the Iterator to the first element.
+     *
      * @return RA
      */
     public function rewind(): self
@@ -425,6 +480,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[] ...$items
+     *
      * @return RA
      */
     public function push(...$items): self
@@ -443,6 +499,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $case
+     *
      * @return RA
      */
     public function changeKeyCase(int $case = CASE_LOWER): self
@@ -451,8 +508,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $size
+     * @param int  $size
      * @param bool $preserveKeys
+     *
      * @return RA
      */
     public function chunk(int $size, bool $preserveKeys = false): self
@@ -470,6 +528,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param string|int $column
      * @param string|int $indexBy
+     *
      * @return RA
      */
     public function column($column, $indexBy): self
@@ -479,8 +538,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param array|RA $dataToCombine
-     * @param bool $asKeys
+     * @param bool     $asKeys
+     *
      * @return RA
+     *
      * @throws RAException
      */
     public function combine($dataToCombine, bool $asKeys = self::AS_VALUES): self
@@ -507,7 +568,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function diffAssoc(...$args): self
@@ -516,7 +578,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function diffKey(...$args): self
@@ -525,7 +588,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function diffUassoc(...$args): self
@@ -534,7 +598,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function diffUkey(...$args): self
@@ -543,7 +608,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function diff(...$args): self
@@ -553,6 +619,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $value
+     *
      * @return RA
      */
     public function fillKeys($value): self
@@ -561,9 +628,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $startIndex
-     * @param int $num
+     * @param int   $startIndex
+     * @param int   $num
      * @param mixed $value
+     *
      * @return RA
      */
     public function fill(int $startIndex, int $num, $value): self
@@ -574,7 +642,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
-     * @param int $flag
+     * @param int      $flag
+     *
      * @return RA
      */
     public function filter(callable $callback, int $flag = self::ARRAY_FILTER_VALUE): self
@@ -591,7 +660,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function intersectAssoc(...$args): self
@@ -600,7 +670,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function intersectKey(...$args): self
@@ -609,7 +680,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function intersectUassoc(...$args): self
@@ -618,7 +690,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function intersectUkey(...$args): self
@@ -627,7 +700,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function intersect(...$args): self
@@ -637,7 +711,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed|null $searchValue
-     * @param bool $strict
+     * @param bool       $strict
+     *
      * @return RA
      */
     public function keys($searchValue = null, bool $strict = false): self
@@ -652,6 +727,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
+     *
      * @return RA
      */
     public function map(callable $callback): self
@@ -660,7 +736,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function mergeRecursive(...$args): self
@@ -669,7 +746,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (array|RA)[] ...$args
+     * @param (RA)[] ...$args
+     *
      * @return RA
      */
     public function merge(...$args): self
@@ -678,8 +756,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $size
+     * @param int   $size
      * @param mixed $value
+     *
      * @return RA
      */
     public function pad(int $size, $value): self
@@ -697,6 +776,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $length
+     *
      * @return mixed|RA
      */
     public function random(int $length = 1)
@@ -712,8 +792,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param callable $callback
+     * @param callable   $callback
      * @param mixed|null $initial
+     *
      * @return mixed
      */
     public function reduce(callable $callback, $initial = null)
@@ -723,6 +804,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param array ...$args
+     *
      * @return RA
      */
     public function replaceRecursive(...$args): self
@@ -732,6 +814,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param array ...$args
+     *
      * @return RA
      */
     public function replace(...$args): self
@@ -749,6 +832,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $needle
+     *
      * @return mixed|null
      */
     public function search($needle)
@@ -770,9 +854,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $offset
+     * @param int      $offset
      * @param int|null $length
-     * @param bool $preserveKeys
+     * @param bool     $preserveKeys
+     *
      * @return RA
      */
     public function slice(int $offset, ?int $length = null, $preserveKeys = false): self
@@ -781,9 +866,10 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $offset
-     * @param int|null $length
+     * @param int        $offset
+     * @param int|null   $length
      * @param mixed|null $replacement
+     *
      * @return RA
      */
     public function splice(int $offset, ?int $length = null, $replacement = null): self
@@ -807,6 +893,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|array|callable) ...$args
+     *
      * @return RA
      */
     public function udiffAssoc(...$args): self
@@ -816,6 +903,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|array|callable) ...$args
+     *
      * @return RA
      */
     public function udiffUassoc(...$args): self
@@ -824,7 +912,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function udiff(...$args): self
@@ -833,7 +922,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function uintersectAssoc(...$args): self
@@ -842,7 +932,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function uintersectUassoc(...$args): self
@@ -851,7 +942,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param (RA|array|callable)[] ...$args
+     * @param (RA|callable)[] ...$args
+     *
      * @return RA
      */
     public function uintersect(...$args): self
@@ -861,6 +953,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function unique(int $sortFlags = SORT_STRING): self
@@ -870,6 +963,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[] ...$args
+     *
      * @return RA
      */
     public function unshift(...$args): self
@@ -887,8 +981,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param callable $callback
+     * @param callable   $callback
      * @param mixed|null $payload
+     *
      * @return RA
      */
     public function walkRecursive(callable $callback, $payload = null): self
@@ -898,8 +993,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param callable $callback
+     * @param callable   $callback
      * @param mixed|null $payload
+     *
      * @return RA
      */
     public function walk(callable $callback, $payload = null): self
@@ -910,6 +1006,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function arsort(int $sortFlags = SORT_REGULAR): self
@@ -920,6 +1017,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function asort(int $sortFlags = SORT_REGULAR): self
@@ -938,6 +1036,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $needle
+     *
      * @return bool
      */
     public function contains($needle): bool
@@ -947,6 +1046,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function krsort(int $sortFlags = SORT_REGULAR): self
@@ -957,6 +1057,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function ksort(int $sortFlags = SORT_REGULAR): self
@@ -994,7 +1095,8 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $start
      * @param mixed $end
-     * @param int $step
+     * @param int   $step
+     *
      * @return RA
      */
     public function range($start, $end, $step = 1): self
@@ -1013,6 +1115,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function rsort(int $sortFlags = SORT_REGULAR): self
@@ -1032,6 +1135,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param int $sortFlags
+     *
      * @return RA
      */
     public function sort(int $sortFlags = SORT_REGULAR): self
@@ -1042,6 +1146,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
+     *
      * @return RA
      */
     public function uasort(callable $callback): self
@@ -1052,6 +1157,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
+     *
      * @return RA
      */
     public function uksort(callable $callback): self
@@ -1062,6 +1168,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
+     *
      * @return RA
      */
     public function usort(callable $callback): self
@@ -1074,6 +1181,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $key
+     *
      * @return bool
      */
     public function keyExists($key): bool
@@ -1083,6 +1191,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $needle
+     *
      * @return bool
      */
     public function has($needle): bool
@@ -1092,6 +1201,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $needle
+     *
      * @return bool
      */
     public function hasValue($needle): bool
@@ -1101,6 +1211,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $key
+     *
      * @return bool
      */
     public function hasKey($key): bool
@@ -1134,7 +1245,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return mixed
+     *
      * @throws RAException
      */
     public function get($offset = null)
@@ -1149,6 +1262,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      * @param mixed $value
+     *
      * @return RA
      */
     public function set($offset, $value): self
@@ -1158,7 +1272,9 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $offset
+     *
      * @return RA
+     *
      * @throws RAException
      */
     public function unset($offset): self
@@ -1192,6 +1308,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[] ...$items
+     *
      * @return RA
      */
     public function append(...$items): self
@@ -1249,6 +1366,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $needle
+     *
      * @return mixed|null
      */
     public function find($needle)

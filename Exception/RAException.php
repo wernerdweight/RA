@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WernerDweight\RA\Exception;
 
-class RAException extends \Exception implements \Throwable
+final class RAException extends \Exception implements \Throwable
 {
     /** @var int */
     public const INVALID_OFFSET = 1;
@@ -17,15 +17,13 @@ class RAException extends \Exception implements \Throwable
     ];
 
     /**
-     * @param int $code
+     * @param int    $code
      * @param string ...$payload
+     *
      * @return RAException
      */
-    public static function create(int $code, string ...$payload): RAException
+    public static function create(int $code, string ...$payload): self
     {
-        return new self(
-            sprintf(self::MESSAGES[$code], ...$payload),
-            $code
-        );
+        return new self(sprintf(self::MESSAGES[$code], ...$payload), $code);
     }
 }

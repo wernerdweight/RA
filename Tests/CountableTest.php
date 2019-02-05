@@ -10,8 +10,16 @@ class CountableTest extends TestCase
 {
     public function testCount(): void
     {
-        $regularRa = new RA(['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', 'test5', ['test6', 'test7']]], RA::REGULAR);
-        $recursiveRa = new RA(['a' => 'test1', 'b' => 'test2', 'c' => ['test3', 'test4', 'test5', ['test6', 'test7']]], RA::RECURSIVE);
+        $regularRa = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => ['test3', 'test4', 'test5', ['test6', 'test7']],
+        ], RA::REGULAR);
+        $recursiveRa = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => ['test3', 'test4', 'test5', ['test6', 'test7']],
+        ], RA::RECURSIVE);
 
         $this->assertSame(3, $regularRa->count());
         $this->assertSame(3, $regularRa->size());
