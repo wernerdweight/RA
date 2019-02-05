@@ -35,7 +35,11 @@ class ArrayMethodsTest extends TestCase
 
     public function testChangeKeyCase(): void
     {
-        $ra = new RA(['a' => 'test1', 'b' => 'test2', 'c' => 'test3']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => 'test3',
+        ]);
         $this->assertSame(['a', 'b', 'c'], $ra->keys()->toArray());
         $ra2 = $ra->changeKeyCase(CASE_UPPER);
         $this->assertSame(['a', 'b', 'c'], $ra->keys()->toArray());
@@ -45,7 +49,13 @@ class ArrayMethodsTest extends TestCase
 
     public function testChunk(): void
     {
-        $ra = new RA(['a' => 'test1', 'b' => 'test2', 'c' => 'test3', 'd' => 'test4', 'e' => 'test5']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => 'test3',
+            'd' => 'test4',
+            'e' => 'test5',
+        ]);
 
         $chunks = $ra->chunk(2);
         $this->assertSame(5, $ra->length());
@@ -65,15 +75,35 @@ class ArrayMethodsTest extends TestCase
     public function testColumn(): void
     {
         $ra = new RA([
-            ['id' => 'abcd', 'title' => 'Test 1', 'price' => 123],
-            ['id' => 'efgh', 'title' => 'Test 2', 'price' => 0],
-            ['id' => 'ijkl', 'title' => 'Test 3', 'price' => 345],
+            [
+                'id' => 'abcd',
+                'title' => 'Test 1',
+                'price' => 123,
+            ],
+            [
+                'id' => 'efgh',
+                'title' => 'Test 2',
+                'price' => 0,
+            ],
+            [
+                'id' => 'ijkl',
+                'title' => 'Test 3',
+                'price' => 345,
+            ],
         ]);
 
         $titleById = $ra->column('title', 'id');
         $priceByTitle = $ra->column('price', 'title');
-        $this->assertSame(['abcd' => 'Test 1', 'efgh' => 'Test 2', 'ijkl' => 'Test 3'], $titleById->toArray());
-        $this->assertSame(['Test 1' => 123, 'Test 2' => 0, 'Test 3' => 345], $priceByTitle->toArray());
+        $this->assertSame([
+            'abcd' => 'Test 1',
+            'efgh' => 'Test 2',
+            'ijkl' => 'Test 3',
+        ], $titleById->toArray());
+        $this->assertSame([
+            'Test 1' => 123,
+            'Test 2' => 0,
+            'Test 3' => 345,
+        ], $priceByTitle->toArray());
     }
 
     public function testCombine(): void
@@ -82,8 +112,18 @@ class ArrayMethodsTest extends TestCase
         $values = new RA(['test1', 'test2', 'test3', 'test4']);
         $asKeys = $keys->combine($values, RA::AS_KEYS);
         $asValues = $keys->combine($values, RA::AS_VALUES);
-        $this->assertSame(['a' => 'test1', 'b' => 'test2', 'c' => 'test3', 'd' => 'test4'], $asKeys->toArray());
-        $this->assertSame(['test1' => 'a', 'test2' => 'b', 'test3' => 'c', 'test4' => 'd'], $asValues->toArray());
+        $this->assertSame([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => 'test3',
+            'd' => 'test4',
+        ], $asKeys->toArray());
+        $this->assertSame([
+            'test1' => 'a',
+            'test2' => 'b',
+            'test3' => 'c',
+            'test4' => 'd',
+        ], $asValues->toArray());
     }
 
     public function testCountValues(): void
@@ -91,10 +131,20 @@ class ArrayMethodsTest extends TestCase
         $ra = new RA(['a', 'a', 'b', 'c', 'd', 'c']);
         $counted = $ra->countValues();
         $this->assertSame(4, $counted->length());
-        $this->assertSame(['a' => 2, 'b' => 1, 'c' => 2, 'd' => 1], $counted->toArray());
+        $this->assertSame([
+            'a' => 2,
+            'b' => 1,
+            'c' => 2,
+            'd' => 1,
+        ], $counted->toArray());
         $aggregated = $ra->aggregateValues();
         $this->assertSame(4, $aggregated->length());
-        $this->assertSame(['a' => 2, 'b' => 1, 'c' => 2, 'd' => 1], $aggregated->toArray());
+        $this->assertSame([
+            'a' => 2,
+            'b' => 1,
+            'c' => 2,
+            'd' => 1,
+        ], $aggregated->toArray());
     }
 
     public function testDiffAssoc(): void
@@ -103,7 +153,10 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $diff = $ra1->diffAssoc($ra2, $ra3);
-        $this->assertSame([2 => 'c', 3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            2 => 'c',
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testDiffKey(): void
@@ -121,11 +174,15 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $diff = $ra1->diffUassoc($ra2, $ra3, function ($key1, $key2) {
-            return $key1 !== 1
+            return 1 !== $key1
                 ? $key1 === $key2 ? 0 : 1
                 : -1;
         });
-        $this->assertSame([1 => 'b', 2 => 'c', 3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testDiffUkey(): void
@@ -138,7 +195,10 @@ class ArrayMethodsTest extends TestCase
                 ? $key1 === $key2 ? 0 : 1
                 : -1;
         });
-        $this->assertSame([2 => 'c', 3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            2 => 'c',
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testDiff(): void
@@ -154,30 +214,52 @@ class ArrayMethodsTest extends TestCase
     {
         $ra = new RA(['a', 'b', 'c', 'd']);
         $filled = $ra->fillKeys('test');
-        $this->assertSame(['a' => 'test', 'b' => 'test', 'c' => 'test', 'd' => 'test'], $filled->toArray());
+        $this->assertSame([
+            'a' => 'test',
+            'b' => 'test',
+            'c' => 'test',
+            'd' => 'test',
+        ], $filled->toArray());
     }
 
     public function testFill(): void
     {
         $ra = new RA();
         $ra->fill(2, 4, 'test');
-        $this->assertSame([2 => 'test', 3 => 'test', 4 => 'test', 5 => 'test'], $ra->toArray());
+        $this->assertSame([
+            2 => 'test',
+            3 => 'test',
+            4 => 'test',
+            5 => 'test',
+        ], $ra->toArray());
     }
 
     public function testFilter(): void
     {
         $ra = new RA(range(1, 10));
         $filtered = $ra->filter(function ($entry) {
-            return $entry % 2 === 0;
+            return 0 === $entry % 2;
         });
-        $this->assertSame([1 => 2, 3 => 4, 5 => 6, 7 => 8, 9 => 10], $filtered->toArray());
+        $this->assertSame([
+            1 => 2,
+            3 => 4,
+            5 => 6,
+            7 => 8,
+            9 => 10,
+        ], $filtered->toArray());
     }
 
     public function testFlip(): void
     {
-        $ra = new RA(['a' => 'test1', 'b' => 'test2']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+        ]);
         $flipped = $ra->flip();
-        $this->assertSame(['test1' => 'a', 'test2' => 'b'], $flipped->toArray());
+        $this->assertSame([
+            'test1' => 'a',
+            'test2' => 'b',
+        ], $flipped->toArray());
     }
 
     public function testIntersectAssoc(): void
@@ -195,7 +277,10 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $intersect = $ra1->intersectKey($ra2, $ra3);
-        $this->assertSame([0 => 'a', 1 => 'b'], $intersect->toArray());
+        $this->assertSame([
+            0 => 'a',
+            1 => 'b',
+        ], $intersect->toArray());
     }
 
     public function testIntersectUassoc(): void
@@ -204,7 +289,7 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $intersect = $ra1->intersectUassoc($ra2, $ra3, function ($key1, $key2) {
-            return $key1 !== 1
+            return 1 !== $key1
                 ? $key1 === $key2 ? 1 : 0
                 : -1;
         });
@@ -235,7 +320,12 @@ class ArrayMethodsTest extends TestCase
 
     public function testKeys(): void
     {
-        $ra = new RA(['a' => 'test1', 'b', 'c' => 'test2', 'd']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b',
+            'c' => 'test2',
+            'd',
+        ]);
         $keys1 = $ra->keys();
         $this->assertSame(['a', 0, 'c', 1], $keys1->toArray());
         $keys2 = $ra->getKeys();
@@ -253,22 +343,126 @@ class ArrayMethodsTest extends TestCase
 
     public function testMergeRecursive(): void
     {
-        $ra1 = new RA(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'c']);
-        $ra2 = new RA(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd']);
+        $ra1 = new RA([
+            'a' => ['aa' => [
+                'aaa' => 1,
+            'aab' => 2,
+            ], [
+                'a0a' => 1,
+            'a0b' => 2,
+            ]],
+            'b' => 1,
+            'c',
+        ]);
+        $ra2 = new RA([
+            'a' => ['aa' => [
+                'aab' => 3,
+            'aac' => 3,
+            ], [
+                'a0a' => 2,
+            'a0c' => 3,
+            ]],
+            'b' => ['bb' => 3],
+            'd',
+        ]);
         $merged1 = $ra1->mergeRecursive($ra2);
         $merged2 = $ra2->mergeRecursive($ra1);
-        $this->assertSame(['a' => ['aa' => ['aaa' => 1, 'aab' => [2, 3], 'aac' => 3], ['a0a' => 1, 'a0b' => 2], ['a0a' => 2, 'a0c' => 3]], 'b' => [1, 'bb' => 3], 'c', 'd'], $merged1->toArray());
-        $this->assertSame(['a' => ['aa' => ['aab' => [3, 2], 'aac' => 3, 'aaa' => 1], ['a0a' => 2, 'a0c' => 3], ['a0a' => 1, 'a0b' => 2]], 'b' => ['bb' => 3, 1], 'd', 'c'], $merged2->toArray());
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aaa' => 1,
+                'aab' => [2, 3],
+                'aac' => 3,
+                ], [
+                    'a0a' => 1,
+                'a0b' => 2,
+                ], [
+                    'a0a' => 2,
+                'a0c' => 3,
+                ]],
+                'b' => [1, 'bb' => 3],
+                'c',
+                'd',
+            ],
+            $merged1->toArray()
+        );
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aab' => [3, 2],
+                'aac' => 3,
+                'aaa' => 1,
+                ], [
+                    'a0a' => 2,
+                'a0c' => 3,
+                ], [
+                    'a0a' => 1,
+                'a0b' => 2,
+                ]],
+                'b' => ['bb' => 3, 1],
+                'd',
+                'c',
+            ],
+            $merged2->toArray()
+        );
     }
 
     public function testMerge(): void
     {
-        $ra1 = new RA(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'c']);
-        $ra2 = new RA(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd']);
+        $ra1 = new RA([
+            'a' => ['aa' => [
+                'aaa' => 1,
+            'aab' => 2,
+            ], [
+                'a0a' => 1,
+            'a0b' => 2,
+            ]],
+            'b' => 1,
+            'c',
+        ]);
+        $ra2 = new RA([
+            'a' => ['aa' => [
+                'aab' => 3,
+            'aac' => 3,
+            ], [
+                'a0a' => 2,
+            'a0c' => 3,
+            ]],
+            'b' => ['bb' => 3],
+            'd',
+        ]);
         $merged1 = $ra1->merge($ra2);
         $merged2 = $ra2->merge($ra1);
-        $this->assertSame(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'c', 'd'], $merged1->toArray());
-        $this->assertSame(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'd', 'c'], $merged2->toArray());
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aab' => 3,
+                'aac' => 3,
+                ], [
+                    'a0a' => 2,
+                'a0c' => 3,
+                ]],
+                'b' => ['bb' => 3],
+                'c',
+                'd',
+            ],
+            $merged1->toArray()
+        );
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aaa' => 1,
+                'aab' => 2,
+                ], [
+                    'a0a' => 1,
+                'a0b' => 2,
+                ]],
+                'b' => 1,
+                'd',
+                'c',
+            ],
+            $merged2->toArray()
+        );
     }
 
     public function testPad(): void
@@ -316,22 +510,118 @@ class ArrayMethodsTest extends TestCase
 
     public function testReplaceRecursive(): void
     {
-        $ra1 = new RA(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'c']);
-        $ra2 = new RA(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd']);
+        $ra1 = new RA([
+            'a' => ['aa' => [
+                'aaa' => 1,
+            'aab' => 2,
+            ], [
+                'a0a' => 1,
+            'a0b' => 2,
+            ]],
+            'b' => 1,
+            'c',
+        ]);
+        $ra2 = new RA([
+            'a' => ['aa' => [
+                'aab' => 3,
+            'aac' => 3,
+            ], [
+                'a0a' => 2,
+            'a0c' => 3,
+            ]],
+            'b' => ['bb' => 3],
+            'd',
+        ]);
         $replaced1 = $ra1->replaceRecursive($ra2);
         $replaced2 = $ra2->replaceRecursive($ra1);
-        $this->assertSame(['a' => ['aa' => ['aaa' => 1, 'aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0b' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd'], $replaced1->toArray());
-        $this->assertSame(['a' => ['aa' => ['aab' => 2, 'aac' => 3, 'aaa' => 1], ['a0a' => 1, 'a0c' => 3, 'a0b' => 2]], 'b' => 1, 'c'], $replaced2->toArray());
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aaa' => 1,
+                'aab' => 3,
+                'aac' => 3,
+                ], [
+                    'a0a' => 2,
+                'a0b' => 2,
+                'a0c' => 3,
+                ]],
+                'b' => ['bb' => 3],
+                'd',
+            ],
+            $replaced1->toArray()
+        );
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aab' => 2,
+                'aac' => 3,
+                'aaa' => 1,
+                ], [
+                    'a0a' => 1,
+                'a0c' => 3,
+                'a0b' => 2,
+                ]],
+                'b' => 1,
+                'c',
+            ],
+            $replaced2->toArray()
+        );
     }
 
     public function testReplace(): void
     {
-        $ra1 = new RA(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'c']);
-        $ra2 = new RA(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd']);
+        $ra1 = new RA([
+            'a' => ['aa' => [
+                'aaa' => 1,
+            'aab' => 2,
+            ], [
+                'a0a' => 1,
+            'a0b' => 2,
+            ]],
+            'b' => 1,
+            'c',
+        ]);
+        $ra2 = new RA([
+            'a' => ['aa' => [
+                'aab' => 3,
+            'aac' => 3,
+            ], [
+                'a0a' => 2,
+            'a0c' => 3,
+            ]],
+            'b' => ['bb' => 3],
+            'd',
+        ]);
         $replaced1 = $ra1->replace($ra2);
         $replaced2 = $ra2->replace($ra1);
-        $this->assertSame(['a' => ['aa' => ['aab' => 3, 'aac' => 3], ['a0a' => 2, 'a0c' => 3]], 'b' => ['bb' => 3], 'd'], $replaced1->toArray());
-        $this->assertSame(['a' => ['aa' => ['aaa' => 1, 'aab' => 2], ['a0a' => 1, 'a0b' => 2]], 'b' => 1, 'c'], $replaced2->toArray());
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aab' => 3,
+                'aac' => 3,
+                ], [
+                    'a0a' => 2,
+                'a0c' => 3,
+                ]],
+                'b' => ['bb' => 3],
+                'd',
+            ],
+            $replaced1->toArray()
+        );
+        $this->assertSame(
+            [
+                'a' => ['aa' => [
+                    'aaa' => 1,
+                'aab' => 2,
+                ], [
+                    'a0a' => 1,
+                'a0b' => 2,
+                ]],
+                'b' => 1,
+                'c',
+            ],
+            $replaced2->toArray()
+        );
     }
 
     public function testReverse(): void
@@ -364,7 +654,10 @@ class ArrayMethodsTest extends TestCase
         $slice1 = $ra->slice(1, 2, false);
         $slice2 = $ra->slice(1, 2, true);
         $this->assertSame(['b', 'c'], $slice1->toArray());
-        $this->assertSame([1 => 'b', 2 => 'c'], $slice2->toArray());
+        $this->assertSame([
+            1 => 'b',
+            2 => 'c',
+        ], $slice2->toArray());
     }
 
     public function testSplice(): void
@@ -397,7 +690,10 @@ class ArrayMethodsTest extends TestCase
         $diff = $ra1->udiffAssoc($ra2, $ra3, function ($value1, $value2) {
             return strtolower($value1) === strtolower($value2) ? 0 : 1;
         });
-        $this->assertSame([2 => 'c', 3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            2 => 'c',
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testUdiffUassoc(): void
@@ -412,7 +708,11 @@ class ArrayMethodsTest extends TestCase
                 ? $key1 === $key2 ? 0 : 1
                 : -1;
         });
-        $this->assertSame([1 => 'b', 2 => 'c', 3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testUdiff(): void
@@ -464,7 +764,10 @@ class ArrayMethodsTest extends TestCase
             $v2 = strtolower($value2);
             return $v1 === $v2 ? 0 : ($v1 > $v2 ? -1 : 1);
         });
-        $this->assertSame([0 => 'a', 2 => 'c'], $intersect->toArray());
+        $this->assertSame([
+            0 => 'a',
+            2 => 'c',
+        ], $intersect->toArray());
     }
 
     public function testUnique(): void
@@ -483,7 +786,12 @@ class ArrayMethodsTest extends TestCase
 
     public function testValues(): void
     {
-        $ra = new RA(['a' => 'test1', 'b' => 'test2', 'c' => 'test3', 'd' => 'test4']);
+        $ra = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => 'test3',
+            'd' => 'test4',
+        ]);
         $values1 = $ra->values();
         $this->assertSame(['test1', 'test2', 'test3', 'test4'], $values1->toArray());
         $values2 = $ra->getValues();
@@ -520,16 +828,36 @@ class ArrayMethodsTest extends TestCase
 
     public function testArsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->arsort();
-        $this->assertSame(['a' => 'd_test', 'c' => 'c_test', 'd' => 'b_test', 'b' => 'a_test'], $ra->toArray());
+        $this->assertSame([
+            'a' => 'd_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+            'b' => 'a_test',
+        ], $ra->toArray());
     }
 
     public function testAsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->asort();
-        $this->assertSame(['b' => 'a_test', 'd' => 'b_test', 'c' => 'c_test', 'a' => 'd_test'], $ra->toArray());
+        $this->assertSame([
+            'b' => 'a_test',
+            'd' => 'b_test',
+            'c' => 'c_test',
+            'a' => 'd_test',
+        ], $ra->toArray());
     }
 
     public function testEnd(): void
@@ -554,30 +882,62 @@ class ArrayMethodsTest extends TestCase
 
     public function testKrsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->krsort();
-        $this->assertSame(['d' => 'b_test', 'c' => 'c_test', 'b' => 'a_test', 'a' => 'd_test'], $ra->toArray());
+        $this->assertSame([
+            'd' => 'b_test',
+            'c' => 'c_test',
+            'b' => 'a_test',
+            'a' => 'd_test',
+        ], $ra->toArray());
     }
 
     public function testKsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->ksort();
-        $this->assertSame(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test'], $ra->toArray());
+        $this->assertSame([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ], $ra->toArray());
     }
 
     public function testNatcasesort(): void
     {
         $ra = new RA(['test1', 'test0', 'test12', 'test2', 'Test4']);
         $ra->natcasesort();
-        $this->assertSame([1 => 'test0', 0 => 'test1', 3 => 'test2', 4 => 'Test4', 2 => 'test12'], $ra->toArray());
+        $this->assertSame([
+            1 => 'test0',
+            0 => 'test1',
+            3 => 'test2',
+            4 => 'Test4',
+            2 => 'test12',
+        ], $ra->toArray());
     }
 
     public function testNatsort(): void
     {
         $ra = new RA(['test1', 'test0', 'test12', 'test2', 'Test4']);
         $ra->natsort();
-        $this->assertSame([4 => 'Test4', 1 => 'test0', 0 => 'test1', 3 => 'test2', 2 => 'test12'], $ra->toArray());
+        $this->assertSame([
+            4 => 'Test4',
+            1 => 'test0',
+            0 => 'test1',
+            3 => 'test2',
+            2 => 'test12',
+        ], $ra->toArray());
     }
 
     public function testRange(): void
@@ -591,46 +951,91 @@ class ArrayMethodsTest extends TestCase
 
     public function testRsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->rsort();
         $this->assertSame(['d_test', 'c_test', 'b_test', 'a_test'], $ra->toArray());
     }
 
     public function testShuffle(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->shuffle();
-        $this->assertNotSame(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test'], $ra->toArray());
+        $this->assertNotSame([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ], $ra->toArray());
     }
 
     public function testSort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->sort();
         $this->assertSame(['a_test', 'b_test', 'c_test', 'd_test'], $ra->toArray());
     }
 
     public function testUasort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->uasort(function ($value1, $value2) {
             return $value1 === $value2 ? 0 : ($value1 > $value2 ? -1 : 1);
         });
-        $this->assertSame(['a' => 'd_test', 'c' => 'c_test', 'd' => 'b_test', 'b' => 'a_test'], $ra->toArray());
+        $this->assertSame([
+            'a' => 'd_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+            'b' => 'a_test',
+        ], $ra->toArray());
     }
 
     public function testUksort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->uksort(function ($key1, $key2) {
             return $key1 === $key2 ? 0 : ($key1 > $key2 ? -1 : 1);
         });
-        $this->assertSame(['d' => 'b_test', 'c' => 'c_test', 'b' => 'a_test', 'a' => 'd_test'], $ra->toArray());
+        $this->assertSame([
+            'd' => 'b_test',
+            'c' => 'c_test',
+            'b' => 'a_test',
+            'a' => 'd_test',
+        ], $ra->toArray());
     }
 
     public function testUsort(): void
     {
-        $ra = new RA(['a' => 'd_test', 'b' => 'a_test', 'c' => 'c_test', 'd' => 'b_test']);
+        $ra = new RA([
+            'a' => 'd_test',
+            'b' => 'a_test',
+            'c' => 'c_test',
+            'd' => 'b_test',
+        ]);
         $ra->usort(function ($value1, $value2) {
             return $value1 === $value2 ? 0 : ($value1 > $value2 ? -1 : 1);
         });
