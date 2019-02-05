@@ -36,7 +36,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return bool
      * @throws RAException
      */
@@ -48,7 +48,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return bool|null
      * @throws RAException
      */
@@ -60,7 +60,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return int
      * @throws RAException
      */
@@ -72,7 +72,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return int|null
      * @throws RAException
      */
@@ -84,7 +84,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return float
      * @throws RAException
      */
@@ -96,7 +96,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return float|null
      * @throws RAException
      */
@@ -108,7 +108,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return string
      * @throws RAException
      */
@@ -120,7 +120,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return string|null
      * @throws RAException
      */
@@ -132,7 +132,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return array
      * @throws RAException
      */
@@ -144,7 +144,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return array|null
      * @throws RAException
      */
@@ -156,7 +156,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return RA
      * @throws RAException
      */
@@ -168,7 +168,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return RA|null
      * @throws RAException
      */
@@ -180,7 +180,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return callable
      * @throws RAException
      */
@@ -192,19 +192,19 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return callable|null
      * @throws RAException
      */
     public function getCallableOrNull($offset): ?callable
     {
-        /** @var null|int $value */
+        /** @var null|callable $value */
         $value = $this->get($offset);
         return $value;
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return iterable
      * @throws RAException
      */
@@ -216,7 +216,7 @@ class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param $offset
+     * @param mixed $offset
      * @return iterable|null
      * @throws RAException
      */
@@ -481,16 +481,21 @@ class RA implements \Countable, \ArrayAccess, \Iterator
      * @param array|RA $dataToCombine
      * @param bool $asKeys
      * @return RA
+     * @throws RAException
      */
     public function combine($dataToCombine, bool $asKeys = self::AS_VALUES): self
     {
         if ($dataToCombine instanceof self) {
             $dataToCombine = $dataToCombine->toArray();
         }
-        return new self(array_combine(
+        $combined = array_combine(
             self::AS_VALUES === $asKeys ? $dataToCombine : $this->data,
             self::AS_VALUES === $asKeys ? $this->data : $dataToCombine
-        ));
+        );
+        if (false === $combined) {
+            throw RAException::create(RAException::INVALID_NUMBER_OF_ELEMENTS);
+        }
+        return new self($combined);
     }
 
     /**
