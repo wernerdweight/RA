@@ -32,7 +32,7 @@
         "fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config vendor/wernerdweight/cs/WernerDweight/CS/src/ecs.yaml --fix",
         "phpstan": "phpstan analyse ./RA.php ./Exception/ ./Tests/ --level max",
         "phpmd": "phpmd ./RA.php text vendor/wernerdweight/cs/WernerDweight/CS/phpmd.xml",
-        "ecs": "ecs check ./RA.php ./Exception/ ./Tests/ --config vendor/wernerdweight/cs/WernerDweight/CS/src/ecs.yaml",
+        "ecs": "ecs check ./RA.php ./Exception/ --config vendor/wernerdweight/cs/WernerDweight/CS/src/ecs.yaml",
         "ecs-fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config vendor/wernerdweight/cs/WernerDweight/CS/src/ecs.yaml --fix",
         "phpunit": "phpunit",
         "victor": "victor"

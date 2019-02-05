@@ -7,12 +7,17 @@ use WernerDweight\RA\Exception\RAException;
 
 final class RA implements \Countable, \ArrayAccess, \Iterator
 {
+    /** @var bool */
     public const RECURSIVE = true;
+    /** @var bool */
     public const REGULAR = false;
 
+    /** @var bool */
     public const AS_VALUES = true;
+    /** @var bool */
     public const AS_KEYS = false;
 
+    /** @var int */
     public const ARRAY_FILTER_VALUE = 0;
 
     /** @var array */
@@ -309,7 +314,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     public function __get(string $name)
     {
         if (true !== $this->offsetExists($name)) {
-            throw RAException::create(RAException::INVALID_OFFSET, $name);
+            throw new RAException(RAException::INVALID_OFFSET, $name);
         } else {
             return $this->data[$name];
         }
@@ -323,7 +328,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     public function __unset(string $name): void
     {
         if (true !== $this->offsetExists($name)) {
-            throw RAException::create(RAException::INVALID_OFFSET, $name);
+            throw new RAException(RAException::INVALID_OFFSET, $name);
         } else {
             unset($this->data[$name]);
         }
@@ -377,7 +382,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     public function offsetGet($offset)
     {
         if (true !== $this->offsetExists($offset)) {
-            throw RAException::create(RAException::INVALID_OFFSET, (string)$offset);
+            throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
         } else {
             return $this->data[$offset];
         }
@@ -409,7 +414,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     public function offsetUnset($offset)
     {
         if (true !== $this->offsetExists($offset)) {
-            throw RAException::create(RAException::INVALID_OFFSET, (string)$offset);
+            throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
         } else {
             unset($this->data[$offset]);
             return $this;
@@ -554,7 +559,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
             self::AS_VALUES === $asKeys ? $this->data : $dataToCombine
         );
         if (false === $combined) {
-            throw RAException::create(RAException::INVALID_NUMBER_OF_ELEMENTS);
+            throw new RAException(RAException::INVALID_NUMBER_OF_ELEMENTS);
         }
         return new self($combined);
     }

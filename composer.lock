@@ -4959,17 +4959,17 @@
         },
         {
             "name": "wernerdweight/cs",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "target-dir": "WernerDweight/CS",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wernerdweight/CS.git",
-                "reference": "01cb4ba80d47a58497922a20cbb321dc97f72ac0"
+                "reference": "46854e91874f08d1620f4ec54c01d4a67058018b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/01cb4ba80d47a58497922a20cbb321dc97f72ac0",
-                "reference": "01cb4ba80d47a58497922a20cbb321dc97f72ac0",
+                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/46854e91874f08d1620f4ec54c01d4a67058018b",
+                "reference": "46854e91874f08d1620f4ec54c01d4a67058018b",
                 "shasum": ""
             },
             "require": {
@@ -5005,7 +5005,7 @@
                 "cs",
                 "standards"
             ],
-            "time": "2019-01-27T18:57:50+00:00"
+            "time": "2019-02-05T17:13:51+00:00"
         },
         {
             "name": "wernerdweight/victor",

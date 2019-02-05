@@ -11,7 +11,7 @@ final class RAException extends \Exception implements \Throwable
     public const INVALID_NUMBER_OF_ELEMENTS = 2;
 
     /** @var string[] */
-    protected const MESSAGES = [
+    private const MESSAGES = [
         self::INVALID_OFFSET => 'Invalid offset "%s"!',
         self::INVALID_NUMBER_OF_ELEMENTS => 'Invalid number of elements!',
     ];
@@ -19,11 +19,9 @@ final class RAException extends \Exception implements \Throwable
     /**
      * @param int    $code
      * @param string ...$payload
-     *
-     * @return RAException
      */
-    public static function create(int $code, string ...$payload): self
+    public function __construct(int $code, string ...$payload)
     {
-        return new self(sprintf(self::MESSAGES[$code], ...$payload), $code);
+        parent::__construct(sprintf(self::MESSAGES[$code], ...$payload), $code);
     }
 }
