@@ -809,21 +809,21 @@ class ArrayMethodsTest extends TestCase
     public function testWalkRecursive(): void
     {
         $ra = new RA(['a', 'b', 'c' => ['test1', 'test2']]);
-        $output = [];
-        $ra->walkRecursive(function ($entry, $key, $payload) use (&$output) {
-            $output[] = $entry . $payload . $key;
+        $output = new RA();
+        $ra->walkRecursive(function ($entry, $key, $payload) use ($output) {
+            $output->push($entry . $payload . $key);
         }, '_');
-        $this->assertSame(['a_0', 'b_1', 'test1_0', 'test2_1'], $output);
+        $this->assertSame(['a_0', 'b_1', 'test1_0', 'test2_1'], $output->toArray());
     }
 
     public function testWalk(): void
     {
         $ra = new RA(['a', 'b', 'c', 'd']);
-        $output = [];
-        $ra->walk(function ($entry, $key, $payload) use (&$output) {
-            $output[] = $entry . $payload . $key;
+        $output = new RA();
+        $ra->walk(function ($entry, $key, $payload) use ($output) {
+            $output->push($entry . $payload . $key);
         }, '_');
-        $this->assertSame(['a_0', 'b_1', 'c_2', 'd_3'], $output);
+        $this->assertSame(['a_0', 'b_1', 'c_2', 'd_3'], $output->toArray());
     }
 
     public function testArsort(): void
