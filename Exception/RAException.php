@@ -9,11 +9,14 @@ final class RAException extends \Exception implements \Throwable
     public const INVALID_OFFSET = 1;
     /** @var int */
     public const INVALID_NUMBER_OF_ELEMENTS = 2;
+    /** @var int */
+    public const INVALID_INCREMENT_TYPE = 3;
 
     /** @var string[] */
     private const MESSAGES = [
         self::INVALID_OFFSET => 'Invalid offset "%s"!',
         self::INVALID_NUMBER_OF_ELEMENTS => 'Invalid number of elements!',
+        self::INVALID_INCREMENT_TYPE => 'Only integers and floats can be incremented/decremented!',
     ];
 
     /**

@@ -265,6 +265,40 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $value;
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return RA
+     *
+     * @throws RAException
+     */
+    public function increment($offset): self
+    {
+        $currentValue = $this->get($offset);
+        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
+            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
+        }
+        $this->set($offset, ++$currentValue);
+        return $this;
+    }
+
+    /**
+     * @param mixed $offset
+     *
+     * @return RA
+     *
+     * @throws RAException
+     */
+    public function decrement($offset): self
+    {
+        $currentValue = $this->get($offset);
+        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
+            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
+        }
+        $this->set($offset, --$currentValue);
+        return $this;
+    }
+
     // magical
 
     /**
