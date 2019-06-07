@@ -1216,6 +1216,28 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
+    /**
+     * @param string $delimiter
+     *
+     * @return string
+     */
+    public function implode(string $delimiter = '', bool $recursive = self::REGULAR): string
+    {
+        if (self::RECURSIVE === $recursive) {
+            /** @var string[] $data */
+            $data = [];
+            foreach ($this->data as $key => $value) {
+                if ($value instanceof self) {
+                    $data[$key] = \Safe\sprintf('{%s}', $value->implode($delimiter, $recursive));
+                } else {
+                    $data[$key] = $value;
+                }
+            }
+            return implode($delimiter, $data);
+        }
+        return implode($delimiter, $this->data);
+    }
+
     // Aliases
 
     /**
@@ -1475,5 +1497,16 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     public function last()
     {
         return $this->end();
+    }
+
+    /**
+     * @param string $delimiter
+     * @param bool   $recursive
+     *
+     * @return string
+     */
+    public function join(string $delimiter = '', bool $recursive = self::REGULAR): string
+    {
+        return $this->implode($delimiter, $recursive);
     }
 }

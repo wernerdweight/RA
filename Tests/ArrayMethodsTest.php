@@ -1041,4 +1041,25 @@ class ArrayMethodsTest extends TestCase
         });
         $this->assertSame(['d_test', 'c_test', 'b_test', 'a_test'], $ra->toArray());
     }
+
+    public function testImplode(): void
+    {
+        $ra = new RA([
+            'a' => 'a_test',
+            'b' => 'b_test',
+            'c' => 'c_test',
+            'd' => 'd_test',
+        ]);
+        $this->assertSame('a_test, b_test, c_test, d_test', $ra->implode(', '));
+
+        $recursiveRa = new RA([
+            'a' => 'test1',
+            'b' => 'test2',
+            'c' => ['test3', 'test4', ['test5', 'test6']],
+        ], RA::RECURSIVE);
+        $this->assertSame(
+            'test1, test2, {test3, test4, {test5, test6}}',
+            $recursiveRa->implode(', ', RA::RECURSIVE)
+        );
+    }
 }
