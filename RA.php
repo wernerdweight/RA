@@ -766,12 +766,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param callable $callback
+     * @param (RA)[]   ...$args
      *
      * @return RA
      */
-    public function map(callable $callback): self
+    public function map(callable $callback, ...$args): self
     {
-        return new self(array_map($callback, $this->data));
+        return new self(array_map($callback, $this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
