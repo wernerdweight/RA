@@ -344,43 +344,58 @@ class ArrayMethodsTest extends TestCase
     public function testMergeRecursive(): void
     {
         $ra1 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aaa' => 1,
             'aab' => 2,
-            ], [
+            ],
+                [
                 'a0a' => 1,
             'a0b' => 2,
-            ]],
+            ],
+            ],
             'b' => 1,
             'c',
         ]);
         $ra2 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aab' => 3,
             'aac' => 3,
-            ], [
+            ],
+                [
                 'a0a' => 2,
             'a0c' => 3,
-            ]],
-            'b' => ['bb' => 3],
+            ],
+            ],
+            'b' => [
+                'bb' => 3,
+            ],
             'd',
         ]);
         $merged1 = $ra1->mergeRecursive($ra2);
         $merged2 = $ra2->mergeRecursive($ra1);
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aaa' => 1,
                 'aab' => [2, 3],
                 'aac' => 3,
-                ], [
+                ],
+                    [
                     'a0a' => 1,
                 'a0b' => 2,
-                ], [
+                ],
+                    [
                     'a0a' => 2,
                 'a0c' => 3,
-                ]],
-                'b' => [1, 'bb' => 3],
+                ],
+                ],
+                'b' => [
+                    1,
+                    'bb' => 3,
+                ],
                 'c',
                 'd',
             ],
@@ -388,18 +403,25 @@ class ArrayMethodsTest extends TestCase
         );
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aab' => [3, 2],
                 'aac' => 3,
                 'aaa' => 1,
-                ], [
+                ],
+                    [
                     'a0a' => 2,
                 'a0c' => 3,
-                ], [
+                ],
+                    [
                     'a0a' => 1,
                 'a0b' => 2,
-                ]],
-                'b' => ['bb' => 3, 1],
+                ],
+                ],
+                'b' => [
+                    'bb' => 3,
+                    1,
+                ],
                 'd',
                 'c',
             ],
@@ -410,39 +432,52 @@ class ArrayMethodsTest extends TestCase
     public function testMerge(): void
     {
         $ra1 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aaa' => 1,
             'aab' => 2,
-            ], [
+            ],
+                [
                 'a0a' => 1,
             'a0b' => 2,
-            ]],
+            ],
+            ],
             'b' => 1,
             'c',
         ]);
         $ra2 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aab' => 3,
             'aac' => 3,
-            ], [
+            ],
+                [
                 'a0a' => 2,
             'a0c' => 3,
-            ]],
-            'b' => ['bb' => 3],
+            ],
+            ],
+            'b' => [
+                'bb' => 3,
+            ],
             'd',
         ]);
         $merged1 = $ra1->merge($ra2);
         $merged2 = $ra2->merge($ra1);
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aab' => 3,
                 'aac' => 3,
-                ], [
+                ],
+                    [
                     'a0a' => 2,
                 'a0c' => 3,
-                ]],
-                'b' => ['bb' => 3],
+                ],
+                ],
+                'b' => [
+                    'bb' => 3,
+                ],
                 'c',
                 'd',
             ],
@@ -450,13 +485,16 @@ class ArrayMethodsTest extends TestCase
         );
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aaa' => 1,
                 'aab' => 2,
-                ], [
+                ],
+                    [
                     'a0a' => 1,
                 'a0b' => 2,
-                ]],
+                ],
+                ],
                 'b' => 1,
                 'd',
                 'c',
@@ -511,56 +549,72 @@ class ArrayMethodsTest extends TestCase
     public function testReplaceRecursive(): void
     {
         $ra1 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aaa' => 1,
             'aab' => 2,
-            ], [
+            ],
+                [
                 'a0a' => 1,
             'a0b' => 2,
-            ]],
+            ],
+            ],
             'b' => 1,
             'c',
         ]);
         $ra2 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aab' => 3,
             'aac' => 3,
-            ], [
+            ],
+                [
                 'a0a' => 2,
             'a0c' => 3,
-            ]],
-            'b' => ['bb' => 3],
+            ],
+            ],
+            'b' => [
+                'bb' => 3,
+            ],
             'd',
         ]);
         $replaced1 = $ra1->replaceRecursive($ra2);
         $replaced2 = $ra2->replaceRecursive($ra1);
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aaa' => 1,
                 'aab' => 3,
                 'aac' => 3,
-                ], [
+                ],
+                    [
                     'a0a' => 2,
                 'a0b' => 2,
                 'a0c' => 3,
-                ]],
-                'b' => ['bb' => 3],
+                ],
+                ],
+                'b' => [
+                    'bb' => 3,
+                ],
                 'd',
             ],
             $replaced1->toArray()
         );
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aab' => 2,
                 'aac' => 3,
                 'aaa' => 1,
-                ], [
+                ],
+                    [
                     'a0a' => 1,
                 'a0c' => 3,
                 'a0b' => 2,
-                ]],
+                ],
+                ],
                 'b' => 1,
                 'c',
             ],
@@ -571,52 +625,68 @@ class ArrayMethodsTest extends TestCase
     public function testReplace(): void
     {
         $ra1 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aaa' => 1,
             'aab' => 2,
-            ], [
+            ],
+                [
                 'a0a' => 1,
             'a0b' => 2,
-            ]],
+            ],
+            ],
             'b' => 1,
             'c',
         ]);
         $ra2 = new RA([
-            'a' => ['aa' => [
+            'a' => [
+                'aa' => [
                 'aab' => 3,
             'aac' => 3,
-            ], [
+            ],
+                [
                 'a0a' => 2,
             'a0c' => 3,
-            ]],
-            'b' => ['bb' => 3],
+            ],
+            ],
+            'b' => [
+                'bb' => 3,
+            ],
             'd',
         ]);
         $replaced1 = $ra1->replace($ra2);
         $replaced2 = $ra2->replace($ra1);
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aab' => 3,
                 'aac' => 3,
-                ], [
+                ],
+                    [
                     'a0a' => 2,
                 'a0c' => 3,
-                ]],
-                'b' => ['bb' => 3],
+                ],
+                ],
+                'b' => [
+                    'bb' => 3,
+                ],
                 'd',
             ],
             $replaced1->toArray()
         );
         $this->assertSame(
             [
-                'a' => ['aa' => [
+                'a' => [
+                    'aa' => [
                     'aaa' => 1,
                 'aab' => 2,
-                ], [
+                ],
+                    [
                     'a0a' => 1,
                 'a0b' => 2,
-                ]],
+                ],
+                ],
                 'b' => 1,
                 'c',
             ],
@@ -808,7 +878,11 @@ class ArrayMethodsTest extends TestCase
 
     public function testWalkRecursive(): void
     {
-        $ra = new RA(['a', 'b', 'c' => ['test1', 'test2']]);
+        $ra = new RA([
+            'a',
+            'b',
+            'c' => ['test1', 'test2'],
+        ]);
         $output = new RA();
         $ra->walkRecursive(function ($entry, $key, $payload) use ($output) {
             $output->push($entry . $payload . $key);

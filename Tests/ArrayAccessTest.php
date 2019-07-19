@@ -22,7 +22,7 @@ class ArrayAccessTest extends TestCase
             'c' => ['test3', 'test4', ['test5', 'test6']],
         ], RA::RECURSIVE);
 
-        $this->assertInternalType('array', $regularRa['c']);
+        $this->assertIsArray($regularRa['c']);
         $this->assertSame(RA::class, get_class($recursiveRa['c']));
         $this->assertSame(
             [

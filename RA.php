@@ -849,7 +849,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function replaceRecursive(...$args): self
     {
-        return new self(array_replace_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        return new self((array)array_replace_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
@@ -859,7 +859,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function replace(...$args): self
     {
-        return new self(array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        return new self((array)array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
