@@ -346,13 +346,13 @@ class ArrayMethodsTest extends TestCase
         $ra1 = new RA([
             'a' => [
                 'aa' => [
-                'aaa' => 1,
+                    'aaa' => 1,
             'aab' => 2,
-            ],
+                ],
                 [
-                'a0a' => 1,
+                    'a0a' => 1,
             'a0b' => 2,
-            ],
+                ],
             ],
             'b' => 1,
             'c',
@@ -360,13 +360,13 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA([
             'a' => [
                 'aa' => [
-                'aab' => 3,
+                    'aab' => 3,
             'aac' => 3,
-            ],
+                ],
                 [
-                'a0a' => 2,
+                    'a0a' => 2,
             'a0c' => 3,
-            ],
+                ],
             ],
             'b' => [
                 'bb' => 3,
@@ -379,18 +379,18 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aaa' => 1,
+                        'aaa' => 1,
                 'aab' => [2, 3],
                 'aac' => 3,
-                ],
+                    ],
                     [
-                    'a0a' => 1,
+                        'a0a' => 1,
                 'a0b' => 2,
-                ],
+                    ],
                     [
-                    'a0a' => 2,
+                        'a0a' => 2,
                 'a0c' => 3,
-                ],
+                    ],
                 ],
                 'b' => [
                     1,
@@ -405,18 +405,18 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aab' => [3, 2],
+                        'aab' => [3, 2],
                 'aac' => 3,
                 'aaa' => 1,
-                ],
+                    ],
                     [
-                    'a0a' => 2,
+                        'a0a' => 2,
                 'a0c' => 3,
-                ],
+                    ],
                     [
-                    'a0a' => 1,
+                        'a0a' => 1,
                 'a0b' => 2,
-                ],
+                    ],
                 ],
                 'b' => [
                     'bb' => 3,
@@ -434,13 +434,13 @@ class ArrayMethodsTest extends TestCase
         $ra1 = new RA([
             'a' => [
                 'aa' => [
-                'aaa' => 1,
+                    'aaa' => 1,
             'aab' => 2,
-            ],
+                ],
                 [
-                'a0a' => 1,
+                    'a0a' => 1,
             'a0b' => 2,
-            ],
+                ],
             ],
             'b' => 1,
             'c',
@@ -448,13 +448,13 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA([
             'a' => [
                 'aa' => [
-                'aab' => 3,
+                    'aab' => 3,
             'aac' => 3,
-            ],
+                ],
                 [
-                'a0a' => 2,
+                    'a0a' => 2,
             'a0c' => 3,
-            ],
+                ],
             ],
             'b' => [
                 'bb' => 3,
@@ -467,13 +467,13 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aab' => 3,
+                        'aab' => 3,
                 'aac' => 3,
-                ],
+                    ],
                     [
-                    'a0a' => 2,
+                        'a0a' => 2,
                 'a0c' => 3,
-                ],
+                    ],
                 ],
                 'b' => [
                     'bb' => 3,
@@ -487,13 +487,13 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aaa' => 1,
+                        'aaa' => 1,
                 'aab' => 2,
-                ],
+                    ],
                     [
-                    'a0a' => 1,
+                        'a0a' => 1,
                 'a0b' => 2,
-                ],
+                    ],
                 ],
                 'b' => 1,
                 'd',
@@ -551,13 +551,13 @@ class ArrayMethodsTest extends TestCase
         $ra1 = new RA([
             'a' => [
                 'aa' => [
-                'aaa' => 1,
+                    'aaa' => 1,
             'aab' => 2,
-            ],
+                ],
                 [
-                'a0a' => 1,
+                    'a0a' => 1,
             'a0b' => 2,
-            ],
+                ],
             ],
             'b' => 1,
             'c',
@@ -565,13 +565,13 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA([
             'a' => [
                 'aa' => [
-                'aab' => 3,
+                    'aab' => 3,
             'aac' => 3,
-            ],
+                ],
                 [
-                'a0a' => 2,
+                    'a0a' => 2,
             'a0c' => 3,
-            ],
+                ],
             ],
             'b' => [
                 'bb' => 3,
@@ -584,15 +584,15 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aaa' => 1,
+                        'aaa' => 1,
                 'aab' => 3,
                 'aac' => 3,
-                ],
+                    ],
                     [
-                    'a0a' => 2,
+                        'a0a' => 2,
                 'a0b' => 2,
                 'a0c' => 3,
-                ],
+                    ],
                 ],
                 'b' => [
                     'bb' => 3,
@@ -605,15 +605,15 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aab' => 2,
+                        'aab' => 2,
                 'aac' => 3,
                 'aaa' => 1,
-                ],
+                    ],
                     [
-                    'a0a' => 1,
+                        'a0a' => 1,
                 'a0c' => 3,
                 'a0b' => 2,
-                ],
+                    ],
                 ],
                 'b' => 1,
                 'c',
@@ -627,13 +627,13 @@ class ArrayMethodsTest extends TestCase
         $ra1 = new RA([
             'a' => [
                 'aa' => [
-                'aaa' => 1,
+                    'aaa' => 1,
             'aab' => 2,
-            ],
+                ],
                 [
-                'a0a' => 1,
+                    'a0a' => 1,
             'a0b' => 2,
-            ],
+                ],
             ],
             'b' => 1,
             'c',
@@ -641,13 +641,13 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA([
             'a' => [
                 'aa' => [
-                'aab' => 3,
+                    'aab' => 3,
             'aac' => 3,
-            ],
+                ],
                 [
-                'a0a' => 2,
+                    'a0a' => 2,
             'a0c' => 3,
-            ],
+                ],
             ],
             'b' => [
                 'bb' => 3,
@@ -660,13 +660,13 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aab' => 3,
+                        'aab' => 3,
                 'aac' => 3,
-                ],
+                    ],
                     [
-                    'a0a' => 2,
+                        'a0a' => 2,
                 'a0c' => 3,
-                ],
+                    ],
                 ],
                 'b' => [
                     'bb' => 3,
@@ -679,13 +679,13 @@ class ArrayMethodsTest extends TestCase
             [
                 'a' => [
                     'aa' => [
-                    'aaa' => 1,
+                        'aaa' => 1,
                 'aab' => 2,
-                ],
+                    ],
                     [
-                    'a0a' => 1,
+                        'a0a' => 1,
                 'a0b' => 2,
-                ],
+                    ],
                 ],
                 'b' => 1,
                 'c',
