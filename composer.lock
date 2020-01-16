@@ -5504,17 +5504,16 @@
         },
         {
             "name": "wernerdweight/cs",
-            "version": "1.4.1",
-            "target-dir": "WernerDweight/CS",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wernerdweight/CS.git",
-                "reference": "f2b481f5688b46beecfe2c87338f03212b07e3f8"
+                "reference": "91ad3eb557754632a11f6d695305834bd3769f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/f2b481f5688b46beecfe2c87338f03212b07e3f8",
-                "reference": "f2b481f5688b46beecfe2c87338f03212b07e3f8",
+                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/91ad3eb557754632a11f6d695305834bd3769f7c",
+                "reference": "91ad3eb557754632a11f6d695305834bd3769f7c",
                 "shasum": ""
             },
             "require": {
@@ -5528,8 +5527,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "WernerDweight\\CS\\": ""
+                "psr-4": {
+                    "WernerDweight\\CS\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5549,7 +5548,7 @@
                 "cs",
                 "standards"
             ],
-            "time": "2020-01-16T15:51:50+00:00"
+            "time": "2020-01-16T16:09:39+00:00"
         },
         {
             "name": "wernerdweight/victor",
