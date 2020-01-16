@@ -5,6 +5,12 @@ namespace WernerDweight\RA;
 
 use WernerDweight\RA\Exception\RAException;
 
+/**
+ * Class RA.
+ *
+ * @implements \ArrayAccess<string|int, mixed>
+ * @implements \Iterator<string|int, mixed>
+ */
 final class RA implements \Countable, \ArrayAccess, \Iterator
 {
     /** @var bool */
@@ -20,15 +26,15 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /** @var int */
     public const ARRAY_FILTER_VALUE = 0;
 
-    /** @var array */
+    /** @var mixed[] */
     private $data = [];
 
     // helpers
 
     /**
-     * @param array $arrays
+     * @param mixed[] $arrays
      *
-     * @return array
+     * @return mixed[]
      */
     private function convertArgumentsToPlainArrays(array $arrays): array
     {
@@ -156,13 +162,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws RAException
      */
     public function getArray($offset): array
     {
-        /** @var array $value */
+        /** @var mixed[] $value */
         $value = $this->get($offset);
         return $value;
     }
@@ -170,13 +176,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      *
-     * @return array|null
+     * @return mixed[]|null
      *
      * @throws RAException
      */
     public function getArrayOrNull($offset): ?array
     {
-        /** @var null|array $value */
+        /** @var null|mixed[] $value */
         $value = $this->get($offset);
         return $value;
     }
@@ -240,13 +246,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      *
-     * @return iterable
+     * @return iterable<mixed>
      *
      * @throws RAException
      */
     public function getIterable($offset): iterable
     {
-        /** @var iterable $value */
+        /** @var iterable<mixed> $value */
         $value = $this->get($offset);
         return $value;
     }
@@ -254,13 +260,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      *
-     * @return iterable|null
+     * @return iterable<mixed>|null
      *
      * @throws RAException
      */
     public function getIterableOrNull($offset): ?iterable
     {
-        /** @var null|iterable $value */
+        /** @var null|iterable<mixed> $value */
         $value = $this->get($offset);
         return $value;
     }
@@ -304,8 +310,8 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * RA constructor.
      *
-     * @param array $data
-     * @param bool  $recursive
+     * @param mixed[] $data
+     * @param bool    $recursive
      */
     public function __construct(array $data = [], bool $recursive = self::REGULAR)
     {
@@ -371,7 +377,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param bool $recursive
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(bool $recursive = self::REGULAR): array
     {
@@ -576,25 +582,22 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param array|RA $dataToCombine
-     * @param bool     $asKeys
+     * @param mixed[]|RA $dataToCombine
+     * @param bool       $asKeys
      *
      * @return RA
      *
-     * @throws RAException
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function combine($dataToCombine, bool $asKeys = self::AS_VALUES): self
     {
         if ($dataToCombine instanceof self) {
             $dataToCombine = $dataToCombine->toArray();
         }
-        $combined = array_combine(
+        $combined = \Safe\array_combine(
             self::AS_VALUES === $asKeys ? $dataToCombine : $this->data,
             self::AS_VALUES === $asKeys ? $this->data : $dataToCombine
         );
-        if (false === $combined) {
-            throw new RAException(RAException::INVALID_NUMBER_OF_ELEMENTS);
-        }
         return new self($combined);
     }
 
@@ -692,10 +695,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function flip(): self
     {
-        return new self(array_flip($this->data));
+        return new self(\Safe\array_flip($this->data));
     }
 
     /**
@@ -843,23 +848,29 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param array ...$args
+     * @param mixed[] ...$args
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function replaceRecursive(...$args): self
     {
-        return new self((array)array_replace_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        return new self(
+            (array)\Safe\array_replace_recursive($this->data, ...$this->convertArgumentsToPlainArrays($args))
+        );
     }
 
     /**
-     * @param array ...$args
+     * @param mixed[]...$args
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function replace(...$args): self
     {
-        return new self((array)array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        return new self((array)\Safe\array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
     /**
@@ -1025,10 +1036,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param mixed|null $payload
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function walkRecursive(callable $callback, $payload = null): self
     {
-        array_walk_recursive($this->data, $callback, $payload);
+        \Safe\array_walk_recursive($this->data, $callback, $payload);
         return $this;
     }
 
@@ -1048,10 +1061,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function arsort(int $sortFlags = SORT_REGULAR): self
     {
-        arsort($this->data, $sortFlags);
+        \Safe\arsort($this->data, $sortFlags);
         return $this;
     }
 
@@ -1059,10 +1074,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function asort(int $sortFlags = SORT_REGULAR): self
     {
-        asort($this->data, $sortFlags);
+        \Safe\asort($this->data, $sortFlags);
         return $this;
     }
 
@@ -1088,10 +1105,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function krsort(int $sortFlags = SORT_REGULAR): self
     {
-        krsort($this->data, $sortFlags);
+        \Safe\krsort($this->data, $sortFlags);
         return $this;
     }
 
@@ -1099,28 +1118,34 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function ksort(int $sortFlags = SORT_REGULAR): self
     {
-        ksort($this->data, $sortFlags);
+        \Safe\ksort($this->data, $sortFlags);
         return $this;
     }
 
     /**
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function natcasesort(): self
     {
-        natcasesort($this->data);
+        \Safe\natcasesort($this->data);
         return $this;
     }
 
     /**
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function natsort(): self
     {
-        natsort($this->data);
+        \Safe\natsort($this->data);
         return $this;
     }
 
@@ -1157,19 +1182,23 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function rsort(int $sortFlags = SORT_REGULAR): self
     {
-        rsort($this->data, $sortFlags);
+        \Safe\rsort($this->data, $sortFlags);
         return $this;
     }
 
     /**
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function shuffle(): self
     {
-        shuffle($this->data);
+        \Safe\shuffle($this->data);
         return $this;
     }
 
@@ -1177,10 +1206,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param int $sortFlags
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function sort(int $sortFlags = SORT_REGULAR): self
     {
-        sort($this->data, $sortFlags);
+        \Safe\sort($this->data, $sortFlags);
         return $this;
     }
 
@@ -1188,10 +1219,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param callable $callback
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function uasort(callable $callback): self
     {
-        uasort($this->data, $callback);
+        \Safe\uasort($this->data, $callback);
         return $this;
     }
 
@@ -1199,10 +1232,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param callable $callback
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function uksort(callable $callback): self
     {
-        uksort($this->data, $callback);
+        \Safe\uksort($this->data, $callback);
         return $this;
     }
 
@@ -1210,10 +1245,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param callable $callback
      *
      * @return RA
+     *
+     * @throws \Safe\Exceptions\ArrayException
      */
     public function usort(callable $callback): self
     {
-        usort($this->data, $callback);
+        \Safe\usort($this->data, $callback);
         return $this;
     }
 
@@ -1221,6 +1258,8 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * @param string $delimiter
      *
      * @return string
+     *
+     * @throws \Safe\Exceptions\StringsException
      */
     public function implode(string $delimiter = '', bool $recursive = self::REGULAR): string
     {

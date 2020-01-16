@@ -23,7 +23,7 @@ class PresenceTest extends TestCase
 
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
-        $ra2['b'];
+        echo $ra2['b'];
     }
 
     public function testPresence2(): void
@@ -33,7 +33,7 @@ class PresenceTest extends TestCase
         unset($ra['a']);
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
-        $ra['a'];
+        echo $ra['a'];
     }
 
     public function testPresence3(): void
