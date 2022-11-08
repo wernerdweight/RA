@@ -405,7 +405,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return bool true on success or false on failure
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->data);
     }
@@ -419,7 +419,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws RAException
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         if (true !== $this->offsetExists($offset)) {
             throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
@@ -436,10 +436,9 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return RA
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->data[$offset] = $value;
-        return $this;
     }
 
     /**
@@ -451,13 +450,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws RAException
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (true !== $this->offsetExists($offset)) {
             throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
         } else {
             unset($this->data[$offset]);
-            return $this;
         }
     }
 
@@ -476,7 +474,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->data);
     }
@@ -486,9 +484,9 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return mixed
      */
-    public function next()
+    public function next(): void
     {
-        return next($this->data);
+        next($this->data);
     }
 
     /**
@@ -496,7 +494,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->data);
     }
@@ -517,10 +515,9 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      *
      * @return RA
      */
-    public function rewind(): self
+    public function rewind(): void
     {
         reset($this->data);
-        return $this;
     }
 
     /**
@@ -1368,7 +1365,8 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function set($offset, $value): self
     {
-        return $this->offsetSet($offset, $value);
+        $this->offsetSet($offset, $value);
+        return $this;
     }
 
     /**
@@ -1380,7 +1378,8 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function unset($offset): self
     {
-        return $this->offsetUnset($offset);
+        $this->offsetUnset($offset);
+        return $this;
     }
 
     /**
