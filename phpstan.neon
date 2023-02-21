@@ -1,2 +1,17 @@
 includes:
     - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+    - vendor/wernerdweight/cs/src/Rules/phpstan-rules.neon
+
+parameters:
+    ignoreErrors:
+        -   message: '#Do not name "ra", shorter than 3 chars#i'
+        -   message: '#Spread operator is not allowed#'
+        -   message: '#Make callable type explicit#'
+        -   message: '#Method "(__isset|getBool|keyExists)\(\)" returns bool type, so the name should start with is\/has\/was#'
+        -   message: '#Function "array_walk\(\)" cannot be used\/left in the code#'
+        -
+            message: '#Parameters should use "[^"]+" types as the only types passed to this method#'
+            path: 'RA.php'
+        -
+            message: '#Use explicit methods over array access on object#'
+            path: 'tests/*'

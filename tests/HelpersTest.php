@@ -17,18 +17,14 @@ class HelpersTest extends TestCase
             'string' => 'A',
         ], RA::REGULAR);
 
-        $ra
-            ->increment('int')
-            ->increment('float')
-        ;
+        $ra->increment('int');
+        $ra->increment('float');
 
         $this->assertSame(124, $ra->getInt('int'));
         $this->assertSame(124.456, $ra->getFloat('float'));
 
-        $ra
-            ->decrement('int')
-            ->decrement('float')
-        ;
+        $ra->decrement('int');
+        $ra->decrement('float');
 
         $this->assertSame(123, $ra->getInt('int'));
         $this->assertSame(123.456, $ra->getFloat('float'));

@@ -31,10 +31,10 @@
     },
     "target-dir": "WernerDweight/RA",
     "scripts": {
-        "fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config ecs.php --fix",
-        "phpstan": "phpstan analyse ./RA.php ./Exception/ ./Tests/ --level max",
+        "fix": "ecs check ./RA.php ./Exception/ ./tests/ --config ecs.php --fix",
+        "phpstan": "phpstan analyse ./RA.php ./Exception/ ./tests/ --level max",
         "phpmd": "phpmd ./RA.php text vendor/wernerdweight/cs/phpmd.xml",
-        "ecs": "ecs check ./RA.php ./Exception/ --config ecs.php",
+        "ecs": "ecs check ./RA.php ./Exception/ ./tests/ --config ecs.php",
         "phpunit": "phpunit"
     }
 }

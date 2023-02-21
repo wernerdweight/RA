@@ -415,14 +415,14 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      */
     public function chunk(int $size, bool $preserveKeys = false): self
     {
-        return new self(
-            array_map(
-                function (array $chunk) {
-                    return new self($chunk);
-                },
-                array_chunk($this->data, $size, $preserveKeys)
-            )
+        $chunks = array_chunk($this->data, $size, $preserveKeys);
+        $mappedChunks = array_map(
+            function (array $chunk) {
+                return new self($chunk);
+            },
+            $chunks
         );
+        return new self($mappedChunks);
     }
 
     /**

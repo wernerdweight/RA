@@ -1107,16 +1107,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.18",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf"
+                "reference": "71b28a67f01ac231f9a8f1ce242270bf4ec1f99c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f2d5cf71be91172a57c649770b73c20ebcffb0bf",
-                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/71b28a67f01ac231f9a8f1ce242270bf4ec1f99c",
+                "reference": "71b28a67f01ac231f9a8f1ce242270bf4ec1f99c",
                 "shasum": ""
             },
             "require": {
@@ -1146,7 +1146,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.18"
+                "source": "https://github.com/phpstan/phpstan/tree/1.10.0"
             },
             "funding": [
                 {
@@ -1162,7 +1162,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-17T15:01:27+00:00"
+            "time": "2023-02-21T13:50:49+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4353,16 +4353,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "11.2.8",
+            "version": "11.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "012d68b5cad4a5e3a6ccd99571209142b87491f5"
+                "reference": "947267668efb055bf78c7b68416cb206285f21d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/012d68b5cad4a5e3a6ccd99571209142b87491f5",
-                "reference": "012d68b5cad4a5e3a6ccd99571209142b87491f5",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/947267668efb055bf78c7b68416cb206285f21d4",
+                "reference": "947267668efb055bf78c7b68416cb206285f21d4",
                 "shasum": ""
             },
             "require": {
@@ -4388,7 +4388,7 @@
             "description": "Use Coding Standard with 0-knowledge of PHP-CS-Fixer and PHP_CodeSniffer",
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/11.2.8"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/11.2.9"
             },
             "funding": [
                 {
@@ -4400,7 +4400,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-05T15:08:01+00:00"
+            "time": "2023-02-21T11:31:15+00:00"
         },
         {
             "name": "symplify/phpstan-rules",
@@ -4692,16 +4692,16 @@
         },
         {
             "name": "wernerdweight/cs",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wernerdweight/CS.git",
-                "reference": "efb1678f5c5ed3d57db7fbcf95e15035121ad38b"
+                "reference": "d2025d11f0e3300dd07672ecdaa1ea7522c3cc29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/efb1678f5c5ed3d57db7fbcf95e15035121ad38b",
-                "reference": "efb1678f5c5ed3d57db7fbcf95e15035121ad38b",
+                "url": "https://api.github.com/repos/wernerdweight/CS/zipball/d2025d11f0e3300dd07672ecdaa1ea7522c3cc29",
+                "reference": "d2025d11f0e3300dd07672ecdaa1ea7522c3cc29",
                 "shasum": ""
             },
             "require": {
@@ -4739,9 +4739,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wernerdweight/CS/issues",
-                "source": "https://github.com/wernerdweight/CS/tree/3.0.0"
+                "source": "https://github.com/wernerdweight/CS/tree/3.0.1"
             },
-            "time": "2023-02-21T10:21:45+00:00"
+            "time": "2023-02-21T16:04:53+00:00"
         }
     ],
     "aliases": [],
