@@ -26,23 +26,31 @@ class CountableTest extends TestCase
         $this->assertSame(3, $regularRa->length());
         $this->assertSame(3, count($regularRa));
 
-        $this->assertSame(4, count($regularRa['c']));
+        /** @var array<int, string|string[]> $c */
+        $c = $regularRa['c'];
+        $this->assertSame(4, count($c));
 
-        $this->assertSame(2, count($regularRa['c'][3]));
+        /** @var array<int, string> $c3 */
+        $c3 = $c[3];
+        $this->assertSame(2, count($c3));
 
         $this->assertSame(3, $recursiveRa->count());
         $this->assertSame(3, $recursiveRa->size());
         $this->assertSame(3, $recursiveRa->length());
         $this->assertSame(3, count($recursiveRa));
 
-        $this->assertSame(4, $recursiveRa['c']->count());
-        $this->assertSame(4, $recursiveRa['c']->size());
-        $this->assertSame(4, $recursiveRa['c']->length());
-        $this->assertSame(4, count($recursiveRa['c']));
+        /** @var RA<int, string|RA<int, string>> $rc */
+        $rc = $recursiveRa['c'];
+        $this->assertSame(4, $rc->count());
+        $this->assertSame(4, $rc->size());
+        $this->assertSame(4, $rc->length());
+        $this->assertSame(4, count($rc));
 
-        $this->assertSame(2, $recursiveRa['c'][3]->count());
-        $this->assertSame(2, $recursiveRa['c'][3]->size());
-        $this->assertSame(2, $recursiveRa['c'][3]->length());
-        $this->assertSame(2, count($recursiveRa['c'][3]));
+        /** @var RA<int, string[]> $rc3 */
+        $rc3 = $rc[3];
+        $this->assertSame(2, $rc3->count());
+        $this->assertSame(2, $rc3->size());
+        $this->assertSame(2, $rc3->length());
+        $this->assertSame(2, count($rc3));
     }
 }

@@ -58,18 +58,30 @@ class ArrayMethodsTest extends TestCase
         ]);
 
         $chunks = $ra->chunk(2);
+        /** @var RA<int, string> $chunk0 */
+        $chunk0 = $chunks[0];
+        /** @var RA<int, string> $chunk1 */
+        $chunk1 = $chunks[1];
+        /** @var RA<int, string> $chunk2 */
+        $chunk2 = $chunks[2];
         $this->assertSame(5, $ra->length());
         $this->assertSame(3, $chunks->length());
-        $this->assertSame(2, $chunks[0]->length());
-        $this->assertSame(2, $chunks[1]->length());
-        $this->assertSame(1, $chunks[2]->length());
+        $this->assertSame(2, $chunk0->length());
+        $this->assertSame(2, $chunk1->length());
+        $this->assertSame(1, $chunk2->length());
 
         $associativeChunks = $ra->chunk(2, true);
+        /** @var RA<string, string> $associativeChunk0 */
+        $associativeChunk0 = $associativeChunks[0];
+        /** @var RA<string, string> $associativeChunk1 */
+        $associativeChunk1 = $associativeChunks[1];
+        /** @var RA<string, string> $associativeChunk2 */
+        $associativeChunk2 = $associativeChunks[2];
         $this->assertSame(5, $ra->length());
         $this->assertSame([0, 1, 2], $associativeChunks->keys()->toArray());
-        $this->assertSame(['a', 'b'], $associativeChunks[0]->keys()->toArray());
-        $this->assertSame(['c', 'd'], $associativeChunks[1]->keys()->toArray());
-        $this->assertSame(['e'], $associativeChunks[2]->keys()->toArray());
+        $this->assertSame(['a', 'b'], $associativeChunk0->keys()->toArray());
+        $this->assertSame(['c', 'd'], $associativeChunk1->keys()->toArray());
+        $this->assertSame(['e'], $associativeChunk2->keys()->toArray());
     }
 
     public function testColumn(): void
@@ -165,7 +177,9 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $diff = $ra1->diffKey($ra2, $ra3);
-        $this->assertSame([3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testDiffUassoc(): void
@@ -207,7 +221,9 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'c']);
         $ra3 = new RA(['c', 'b', 'f']);
         $diff = $ra1->diff($ra2, $ra3);
-        $this->assertSame([3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testFillKeys(): void
@@ -268,7 +284,9 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['a', 'b']);
         $ra3 = new RA(['c', 'b', 'a']);
         $intersect = $ra1->intersectAssoc($ra2, $ra3);
-        $this->assertSame([1 => 'b'], $intersect->toArray());
+        $this->assertSame([
+            1 => 'b',
+        ], $intersect->toArray());
     }
 
     public function testIntersectKey(): void
@@ -293,7 +311,9 @@ class ArrayMethodsTest extends TestCase
                 ? $key1 === $key2 ? 1 : 0
                 : -1;
         });
-        $this->assertSame([2 => 'c'], $intersect->toArray());
+        $this->assertSame([
+            2 => 'c',
+        ], $intersect->toArray());
     }
 
     public function testIntersectUkey(): void
@@ -306,7 +326,9 @@ class ArrayMethodsTest extends TestCase
                 ? $key1 === $key2 ? 0 : 1
                 : -1;
         });
-        $this->assertSame([0 => 'a'], $intersect->toArray());
+        $this->assertSame([
+            0 => 'a',
+        ], $intersect->toArray());
     }
 
     public function testIntersect(): void
@@ -315,7 +337,9 @@ class ArrayMethodsTest extends TestCase
         $ra2 = new RA(['d', 'b']);
         $ra3 = new RA(['c', 'a', 'b']);
         $intersect = $ra1->intersect($ra2, $ra3);
-        $this->assertSame([1 => 'b'], $intersect->toArray());
+        $this->assertSame([
+            1 => 'b',
+        ], $intersect->toArray());
     }
 
     public function testKeys(): void
@@ -347,11 +371,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aaa' => 1,
-            'aab' => 2,
+                    'aab' => 2,
                 ],
                 [
                     'a0a' => 1,
-            'a0b' => 2,
+                    'a0b' => 2,
                 ],
             ],
             'b' => 1,
@@ -361,11 +385,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aab' => 3,
-            'aac' => 3,
+                    'aac' => 3,
                 ],
                 [
                     'a0a' => 2,
-            'a0c' => 3,
+                    'a0c' => 3,
                 ],
             ],
             'b' => [
@@ -380,16 +404,16 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aaa' => 1,
-                'aab' => [2, 3],
-                'aac' => 3,
+                        'aab' => [2, 3],
+                        'aac' => 3,
                     ],
                     [
                         'a0a' => 1,
-                'a0b' => 2,
+                        'a0b' => 2,
                     ],
                     [
                         'a0a' => 2,
-                'a0c' => 3,
+                        'a0c' => 3,
                     ],
                 ],
                 'b' => [
@@ -406,16 +430,16 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aab' => [3, 2],
-                'aac' => 3,
-                'aaa' => 1,
+                        'aac' => 3,
+                        'aaa' => 1,
                     ],
                     [
                         'a0a' => 2,
-                'a0c' => 3,
+                        'a0c' => 3,
                     ],
                     [
                         'a0a' => 1,
-                'a0b' => 2,
+                        'a0b' => 2,
                     ],
                 ],
                 'b' => [
@@ -435,11 +459,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aaa' => 1,
-            'aab' => 2,
+                    'aab' => 2,
                 ],
                 [
                     'a0a' => 1,
-            'a0b' => 2,
+                    'a0b' => 2,
                 ],
             ],
             'b' => 1,
@@ -449,11 +473,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aab' => 3,
-            'aac' => 3,
+                    'aac' => 3,
                 ],
                 [
                     'a0a' => 2,
-            'a0c' => 3,
+                    'a0c' => 3,
                 ],
             ],
             'b' => [
@@ -468,11 +492,11 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aab' => 3,
-                'aac' => 3,
+                        'aac' => 3,
                     ],
                     [
                         'a0a' => 2,
-                'a0c' => 3,
+                        'a0c' => 3,
                     ],
                 ],
                 'b' => [
@@ -488,11 +512,11 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aaa' => 1,
-                'aab' => 2,
+                        'aab' => 2,
                     ],
                     [
                         'a0a' => 1,
-                'a0b' => 2,
+                        'a0b' => 2,
                     ],
                 ],
                 'b' => 1,
@@ -518,12 +542,13 @@ class ArrayMethodsTest extends TestCase
 
         $ra = new RA([0.1, 0.2, 0.3, 0.4, 0.5]);
         $product2 = $ra->getProduct();
-        $this->assertSame(0.00120, $product2);
+        $this->assertEqualsWithDelta(0.00120, $product2, 0.00001);
     }
 
     public function testRandom(): void
     {
         $ra = new RA(['a', 'b', 'c', 'd']);
+        /** @var RA<int, string> $randomEntries */
         $randomEntries = $ra->random(2);
         $this->assertSame(2, $randomEntries->length());
         foreach ($randomEntries as $entry) {
@@ -552,11 +577,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aaa' => 1,
-            'aab' => 2,
+                    'aab' => 2,
                 ],
                 [
                     'a0a' => 1,
-            'a0b' => 2,
+                    'a0b' => 2,
                 ],
             ],
             'b' => 1,
@@ -566,11 +591,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aab' => 3,
-            'aac' => 3,
+                    'aac' => 3,
                 ],
                 [
                     'a0a' => 2,
-            'a0c' => 3,
+                    'a0c' => 3,
                 ],
             ],
             'b' => [
@@ -585,13 +610,13 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aaa' => 1,
-                'aab' => 3,
-                'aac' => 3,
+                        'aab' => 3,
+                        'aac' => 3,
                     ],
                     [
                         'a0a' => 2,
-                'a0b' => 2,
-                'a0c' => 3,
+                        'a0b' => 2,
+                        'a0c' => 3,
                     ],
                 ],
                 'b' => [
@@ -606,13 +631,13 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aab' => 2,
-                'aac' => 3,
-                'aaa' => 1,
+                        'aac' => 3,
+                        'aaa' => 1,
                     ],
                     [
                         'a0a' => 1,
-                'a0c' => 3,
-                'a0b' => 2,
+                        'a0c' => 3,
+                        'a0b' => 2,
                     ],
                 ],
                 'b' => 1,
@@ -628,11 +653,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aaa' => 1,
-            'aab' => 2,
+                    'aab' => 2,
                 ],
                 [
                     'a0a' => 1,
-            'a0b' => 2,
+                    'a0b' => 2,
                 ],
             ],
             'b' => 1,
@@ -642,11 +667,11 @@ class ArrayMethodsTest extends TestCase
             'a' => [
                 'aa' => [
                     'aab' => 3,
-            'aac' => 3,
+                    'aac' => 3,
                 ],
                 [
                     'a0a' => 2,
-            'a0c' => 3,
+                    'a0c' => 3,
                 ],
             ],
             'b' => [
@@ -661,11 +686,11 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aab' => 3,
-                'aac' => 3,
+                        'aac' => 3,
                     ],
                     [
                         'a0a' => 2,
-                'a0c' => 3,
+                        'a0c' => 3,
                     ],
                 ],
                 'b' => [
@@ -680,11 +705,11 @@ class ArrayMethodsTest extends TestCase
                 'a' => [
                     'aa' => [
                         'aaa' => 1,
-                'aab' => 2,
+                        'aab' => 2,
                     ],
                     [
                         'a0a' => 1,
-                'a0b' => 2,
+                        'a0b' => 2,
                     ],
                 ],
                 'b' => 1,
@@ -795,7 +820,9 @@ class ArrayMethodsTest extends TestCase
             $v2 = strtolower($value2);
             return $v1 === $v2 ? 0 : ($v1 > $v2 ? -1 : 1);
         });
-        $this->assertSame([3 => 'd'], $diff->toArray());
+        $this->assertSame([
+            3 => 'd',
+        ], $diff->toArray());
     }
 
     public function testUintersectAssoc(): void

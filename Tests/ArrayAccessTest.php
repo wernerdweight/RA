@@ -22,8 +22,11 @@ class ArrayAccessTest extends TestCase
             'c' => ['test3', 'test4', ['test5', 'test6']],
         ], RA::RECURSIVE);
 
+        /** @var RA<int, RA<int, string>> $rc */
+        $rc = $recursiveRa['c'];
+
         $this->assertIsArray($regularRa['c']);
-        $this->assertSame(RA::class, get_class($recursiveRa['c']));
+        $this->assertSame(RA::class, get_class($rc));
         $this->assertSame(
             [
                 'a' => 'test1',
@@ -58,17 +61,21 @@ class ArrayAccessTest extends TestCase
         $this->assertSame(['a', 'b', 'c'], $keys);
         $this->assertSame(['test1', 'test2', ['test3', 'test4', ['test5', 'test6']]], $values);
 
+        /** @var RA<int, string> $rc2 */
+        $rc2 = $rc[2];
         $this->assertSame('test6', $regularRa['c'][2][1]);
-        $this->assertSame('test6', $recursiveRa['c'][2][1]);
+        $this->assertSame('test6', $rc2[1]);
 
         $this->expectException(RAException::class);
         $this->expectExceptionCode(RAException::INVALID_OFFSET);
-        $this->assertSame('test6', $recursiveRa['c'][2][2]);
+        $this->assertSame('test6', $rc2[2]);
     }
 
     public function testOffsetExists(): void
     {
-        $ra = new RA(['a' => 'test']);
+        $ra = new RA([
+            'a' => 'test',
+        ]);
         $this->assertTrue($ra->offsetExists('a'));
         $this->assertFalse($ra->offsetExists('b'));
         $this->assertTrue($ra->keyExists('a'));
@@ -79,7 +86,9 @@ class ArrayAccessTest extends TestCase
 
     public function testOffsetGet(): void
     {
-        $ra = new RA(['a' => 'test']);
+        $ra = new RA([
+            'a' => 'test',
+        ]);
         $this->assertSame('test', $ra->offsetGet('a'));
         $this->assertSame('test', $ra->get('a'));
         $this->expectException(RAException::class);

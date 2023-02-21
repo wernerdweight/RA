@@ -3,7 +3,7 @@ RA
 
 PHP Array object with consistent, predictable and convenient API
 
-[![Build Status](https://travis-ci.org/wernerdweight/RA.svg?branch=master)](https://travis-ci.org/wernerdweight/RA)
+[![Build Status](https://app.travis-ci.com/wernerdweight/RA.svg?branch=master)](https://app.travis-ci.com/wernerdweight/RA)
 [![Latest Stable Version](https://poser.pugx.org/wernerdweight/ra/v/stable)](https://packagist.org/packages/wernerdweight/ra)
 [![Total Downloads](https://poser.pugx.org/wernerdweight/ra/downloads)](https://packagist.org/packages/wernerdweight/ra)
 [![License](https://poser.pugx.org/wernerdweight/ra/license)](https://packagist.org/packages/wernerdweight/ra)

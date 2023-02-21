@@ -10,300 +10,45 @@ use WernerDweight\RA\Exception\RAException;
  *
  * @implements \ArrayAccess<string|int, mixed>
  * @implements \Iterator<string|int, mixed>
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ShortClassName)
  */
 final class RA implements \Countable, \ArrayAccess, \Iterator
 {
-    /** @var bool */
+    /**
+     * @var bool
+     */
     public const RECURSIVE = true;
-    /** @var bool */
+
+    /**
+     * @var bool
+     */
     public const REGULAR = false;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     public const AS_VALUES = true;
-    /** @var bool */
+
+    /**
+     * @var bool
+     */
     public const AS_KEYS = false;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public const ARRAY_FILTER_VALUE = 0;
 
-    /** @var mixed[] */
+    /**
+     * @var mixed[]
+     */
     private $data = [];
-
-    // helpers
-
-    /**
-     * @param mixed[] $arrays
-     *
-     * @return mixed[]
-     */
-    private function convertArgumentsToPlainArrays(array $arrays): array
-    {
-        return array_map(function ($entry) {
-            if ($entry instanceof self) {
-                return $entry->toArray();
-            } else {
-                return $entry;
-            }
-        }, $arrays);
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return bool
-     *
-     * @throws RAException
-     */
-    public function getBool($offset): bool
-    {
-        /** @var bool $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return bool|null
-     *
-     * @throws RAException
-     */
-    public function getBoolOrNull($offset): ?bool
-    {
-        /** @var null|bool $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return int
-     *
-     * @throws RAException
-     */
-    public function getInt($offset): int
-    {
-        /** @var int $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return int|null
-     *
-     * @throws RAException
-     */
-    public function getIntOrNull($offset): ?int
-    {
-        /** @var null|int $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return float
-     *
-     * @throws RAException
-     */
-    public function getFloat($offset): float
-    {
-        /** @var float $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return float|null
-     *
-     * @throws RAException
-     */
-    public function getFloatOrNull($offset): ?float
-    {
-        /** @var null|float $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return string
-     *
-     * @throws RAException
-     */
-    public function getString($offset): string
-    {
-        /** @var string $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return string|null
-     *
-     * @throws RAException
-     */
-    public function getStringOrNull($offset): ?string
-    {
-        /** @var null|string $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed[]
-     *
-     * @throws RAException
-     */
-    public function getArray($offset): array
-    {
-        /** @var mixed[] $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed[]|null
-     *
-     * @throws RAException
-     */
-    public function getArrayOrNull($offset): ?array
-    {
-        /** @var null|mixed[] $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return RA
-     *
-     * @throws RAException
-     */
-    public function getRA($offset): self
-    {
-        /** @var RA $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return RA|null
-     *
-     * @throws RAException
-     */
-    public function getRAOrNull($offset): ?self
-    {
-        /** @var null|RA $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return callable
-     *
-     * @throws RAException
-     */
-    public function getCallable($offset): callable
-    {
-        /** @var callable $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return callable|null
-     *
-     * @throws RAException
-     */
-    public function getCallableOrNull($offset): ?callable
-    {
-        /** @var null|callable $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return iterable<mixed>
-     *
-     * @throws RAException
-     */
-    public function getIterable($offset): iterable
-    {
-        /** @var iterable<mixed> $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return iterable<mixed>|null
-     *
-     * @throws RAException
-     */
-    public function getIterableOrNull($offset): ?iterable
-    {
-        /** @var null|iterable<mixed> $value */
-        $value = $this->get($offset);
-        return $value;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return RA
-     *
-     * @throws RAException
-     */
-    public function increment($offset): self
-    {
-        $currentValue = $this->get($offset);
-        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
-            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
-        }
-        $this->set($offset, ++$currentValue);
-        return $this;
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return RA
-     *
-     * @throws RAException
-     */
-    public function decrement($offset): self
-    {
-        $currentValue = $this->get($offset);
-        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
-            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
-        }
-        $this->set($offset, --$currentValue);
-        return $this;
-    }
 
     // magical
 
@@ -311,7 +56,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
      * RA constructor.
      *
      * @param mixed[] $data
-     * @param bool    $recursive
      */
     public function __construct(array $data = [], bool $recursive = self::REGULAR)
     {
@@ -326,27 +70,19 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function __set(string $name, $value): void
     {
         $this->data[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function __isset(string $name): bool
     {
         return isset($this->data[$name]);
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      *
      * @throws RAException
@@ -355,28 +91,216 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     {
         if (true !== $this->offsetExists($name)) {
             throw new RAException(RAException::INVALID_OFFSET, $name);
-        } else {
-            return $this->data[$name];
         }
+        return $this->data[$name];
     }
 
     /**
-     * @param string $name
-     *
      * @throws RAException
      */
     public function __unset(string $name): void
     {
         if (true !== $this->offsetExists($name)) {
             throw new RAException(RAException::INVALID_OFFSET, $name);
-        } else {
-            unset($this->data[$name]);
         }
+        unset($this->data[$name]);
     }
 
     /**
-     * @param bool $recursive
+     * @throws RAException
+     */
+    public function getBool(int|string|null $offset): bool
+    {
+        /** @var bool $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getBoolOrNull(int|string|null $offset): ?bool
+    {
+        /** @var null|bool $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getInt(int|string|null $offset): int
+    {
+        /** @var int $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getIntOrNull(int|string|null $offset): ?int
+    {
+        /** @var null|int $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getFloat(int|string|null $offset): float
+    {
+        /** @var float $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getFloatOrNull(int|string|null $offset): ?float
+    {
+        /** @var null|float $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getString(int|string|null $offset): string
+    {
+        /** @var string $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getStringOrNull(int|string|null $offset): ?string
+    {
+        /** @var null|string $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @return mixed[]
      *
+     * @throws RAException
+     */
+    public function getArray(int|string|null $offset): array
+    {
+        /** @var mixed[] $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @return mixed[]|null
+     *
+     * @throws RAException
+     */
+    public function getArrayOrNull(int|string|null $offset): ?array
+    {
+        /** @var null|mixed[] $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getRA(int|string|null $offset): self
+    {
+        /** @var RA $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getRAOrNull(int|string|null $offset): ?self
+    {
+        /** @var null|RA $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getCallable(int|string|null $offset): callable
+    {
+        /** @var callable $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function getCallableOrNull(int|string|null $offset): ?callable
+    {
+        /** @var null|callable $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @return iterable<mixed>
+     *
+     * @throws RAException
+     */
+    public function getIterable(int|string|null $offset): iterable
+    {
+        /** @var iterable<mixed> $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @return iterable<mixed>|null
+     *
+     * @throws RAException
+     */
+    public function getIterableOrNull(int|string|null $offset): ?iterable
+    {
+        /** @var null|iterable<mixed> $value */
+        $value = $this->get($offset);
+        return $value;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function increment(int|string|null $offset): self
+    {
+        $currentValue = $this->get($offset);
+        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
+            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
+        }
+        $this->set($offset, ++$currentValue);
+        return $this;
+    }
+
+    /**
+     * @throws RAException
+     */
+    public function decrement(int|string|null $offset): self
+    {
+        $currentValue = $this->get($offset);
+        if (true !== is_int($currentValue) && true !== is_float($currentValue)) {
+            throw new RAException(RAException::INVALID_INCREMENT_TYPE);
+        }
+        $this->set($offset, --$currentValue);
+        return $this;
+    }
+
+    /**
      * @return mixed[]
      */
     public function toArray(bool $recursive = self::REGULAR): array
@@ -384,26 +308,19 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         if (self::RECURSIVE === $recursive) {
             $data = [];
             foreach ($this->data as $key => $value) {
-                if ($value instanceof self) {
-                    $data[$key] = $value->toArray($recursive);
-                } else {
-                    $data[$key] = $value;
-                }
+                $data[$key] = $value instanceof self
+                    ? $value->toArray($recursive)
+                    : $value;
             }
             return $data;
-        } else {
-            return $this->data;
         }
+        return $this->data;
     }
 
     // main
 
     /**
-     * Whether a offset exists.
-     *
-     * @param mixed $offset
-     *
-     * @return bool true on success or false on failure
+     * @param int|string $offset
      */
     public function offsetExists(mixed $offset): bool
     {
@@ -411,110 +328,60 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Offset to retrieve.
-     *
-     * @param mixed $offset
-     *
-     * @return mixed
-     *
+     * @param  int|string  $offset
      * @throws RAException
      */
     public function offsetGet(mixed $offset): mixed
     {
         if (true !== $this->offsetExists($offset)) {
             throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
-        } else {
-            return $this->data[$offset];
         }
+        return $this->data[$offset];
     }
 
-    /**
-     * Offset to set.
-     *
-     * @param mixed $offset
-     * @param mixed $value
-     *
-     * @return RA
-     */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->data[$offset] = $value;
     }
 
     /**
-     * Offset to unset.
-     *
-     * @param mixed $offset
-     *
-     * @return RA
-     *
+     * @param  int|string  $offset
      * @throws RAException
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         if (true !== $this->offsetExists($offset)) {
             throw new RAException(RAException::INVALID_OFFSET, (string)$offset);
-        } else {
-            unset($this->data[$offset]);
         }
+        unset($this->data[$offset]);
     }
 
-    /**
-     * Count elements of an object.
-     *
-     * @return int
-     */
     public function count(): int
     {
         return count($this->data);
     }
 
-    /**
-     * Return the current element.
-     *
-     * @return mixed
-     */
     public function current(): mixed
     {
         return current($this->data);
     }
 
-    /**
-     * Move forward to next element.
-     *
-     * @return mixed
-     */
     public function next(): void
     {
         next($this->data);
     }
 
-    /**
-     * Return the key of the current element.
-     *
-     * @return mixed
-     */
-    public function key(): mixed
+    public function key(): int|string|null
     {
         return key($this->data);
     }
 
-    /**
-     * Checks if current position is valid.
-     *
-     * @return bool true on success or false on failure
-     */
     public function valid(): bool
     {
         $key = $this->key();
-        return null !== $key && false !== $key;
+        return null !== $key;
     }
 
-    /**
-     * Rewind the Iterator to the first element.
-     *
-     * @return RA
-     */
     public function rewind(): void
     {
         reset($this->data);
@@ -522,8 +389,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[] ...$items
-     *
-     * @return RA
      */
     public function push(...$items): self
     {
@@ -539,21 +404,14 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return array_pop($this->data);
     }
 
-    /**
-     * @param int $case
-     *
-     * @return RA
-     */
     public function changeKeyCase(int $case = CASE_LOWER): self
     {
         return new self(array_change_key_case($this->data, $case));
     }
 
     /**
-     * @param int  $size
-     * @param bool $preserveKeys
-     *
-     * @return RA
+     * @param int<1, max> $size
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function chunk(int $size, bool $preserveKeys = false): self
     {
@@ -570,8 +428,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param string|int $column
      * @param string|int $indexBy
-     *
-     * @return RA
      */
     public function column($column, $indexBy): self
     {
@@ -580,9 +436,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[]|RA $dataToCombine
-     * @param bool       $asKeys
-     *
-     * @return RA
      *
      * @throws \Safe\Exceptions\ArrayException
      */
@@ -598,9 +451,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return new self($combined);
     }
 
-    /**
-     * @return RA
-     */
     public function countValues(): self
     {
         return new self(array_count_values($this->data));
@@ -608,8 +458,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function diffAssoc(...$args): self
     {
@@ -618,8 +466,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function diffKey(...$args): self
     {
@@ -628,8 +474,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function diffUassoc(...$args): self
     {
@@ -638,8 +482,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function diffUkey(...$args): self
     {
@@ -648,8 +490,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function diff(...$args): self
     {
@@ -658,8 +498,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed $value
-     *
-     * @return RA
      */
     public function fillKeys($value): self
     {
@@ -667,11 +505,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int   $startIndex
-     * @param int   $num
      * @param mixed $value
-     *
-     * @return RA
      */
     public function fill(int $startIndex, int $num, $value): self
     {
@@ -679,20 +513,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
-    /**
-     * @param callable $callback
-     * @param int      $flag
-     *
-     * @return RA
-     */
     public function filter(callable $callback, int $flag = self::ARRAY_FILTER_VALUE): self
     {
         return new self(array_filter($this->data, $callback, $flag));
     }
 
     /**
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function flip(): self
@@ -702,8 +528,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function intersectAssoc(...$args): self
     {
@@ -712,8 +536,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function intersectKey(...$args): self
     {
@@ -722,8 +544,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function intersectUassoc(...$args): self
     {
@@ -732,8 +552,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function intersectUkey(...$args): self
     {
@@ -742,8 +560,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function intersect(...$args): self
     {
@@ -751,13 +567,11 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param mixed|null $searchValue
-     * @param bool       $strict
-     *
-     * @return RA
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    public function keys($searchValue = null, bool $strict = false): self
+    public function keys(mixed $searchValue = null, bool $strict = false): self
     {
+        $args = [];
         $args[] = $this->data;
         if (null !== $searchValue) {
             $args[] = $searchValue;
@@ -767,10 +581,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param callable $callback
      * @param (RA)[]   ...$args
-     *
-     * @return RA
      */
     public function map(callable $callback, ...$args): self
     {
@@ -779,8 +590,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function mergeRecursive(...$args): self
     {
@@ -789,8 +598,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA)[] ...$args
-     *
-     * @return RA
      */
     public function merge(...$args): self
     {
@@ -798,10 +605,7 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int   $size
      * @param mixed $value
-     *
-     * @return RA
      */
     public function pad(int $size, $value): self
     {
@@ -817,37 +621,26 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $length
-     *
      * @return mixed|RA
      */
-    public function random(int $length = 1)
+    public function random(int $length = 1): mixed
     {
         $keys = array_rand($this->data, $length);
         if (true === is_array($keys)) {
             return new self(array_map(function ($key) {
                 return $this->data[$key];
             }, $keys));
-        } else {
-            return $this->data[$keys];
         }
+        return $this->data[$keys];
     }
 
-    /**
-     * @param callable   $callback
-     * @param mixed|null $initial
-     *
-     * @return mixed
-     */
-    public function reduce(callable $callback, $initial = null)
+    public function reduce(callable $callback, mixed $initial = null): mixed
     {
         return array_reduce($this->data, $callback, $initial);
     }
 
     /**
      * @param mixed[] ...$args
-     *
-     * @return RA
      *
      * @throws \Safe\Exceptions\ArrayException
      */
@@ -861,8 +654,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     /**
      * @param mixed[]...$args
      *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function replace(...$args): self
@@ -870,57 +661,34 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return new self((array)\Safe\array_replace($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
-    /**
-     * @return RA
-     */
     public function reverse(): self
     {
         return new self(array_reverse($this->data));
     }
 
-    /**
-     * @param mixed $needle
-     *
-     * @return mixed|null
-     */
-    public function search($needle)
+    public function search(mixed $needle): mixed
     {
         $key = array_search($needle, $this->data, true);
         if (false !== $key) {
             return $this->data[$key];
-        } else {
-            return null;
         }
+        return null;
     }
 
-    /**
-     * @return mixed
-     */
-    public function shift()
+    public function shift(): mixed
     {
         return array_shift($this->data);
     }
 
     /**
-     * @param int      $offset
-     * @param int|null $length
-     * @param bool     $preserveKeys
-     *
-     * @return RA
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    public function slice(int $offset, ?int $length = null, $preserveKeys = false): self
+    public function slice(int $offset, ?int $length = null, bool $preserveKeys = false): self
     {
         return new self(array_slice($this->data, $offset, $length, $preserveKeys));
     }
 
-    /**
-     * @param int        $offset
-     * @param int|null   $length
-     * @param mixed|null $replacement
-     *
-     * @return RA
-     */
-    public function splice(int $offset, ?int $length = null, $replacement = null): self
+    public function splice(int $offset, ?int $length = null, mixed $replacement = null): self
     {
         if (null === $length) {
             $length = $this->count();
@@ -931,38 +699,34 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return new self(array_splice($this->data, $offset, $length, $replacement));
     }
 
-    /**
-     * @return float|int
-     */
-    public function sum()
+    public function sum(): float|int
     {
         return array_sum($this->data);
     }
 
     /**
-     * @param (RA|array|callable) ...$args
-     *
-     * @return RA
+     * @param  RA|array<mixed>|callable ...$args
+     * @return $this
      */
-    public function udiffAssoc(...$args): self
+    public function udiffAssoc(self|array|callable ...$args): self
     {
-        return new self(array_udiff_assoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        /** @var array<mixed[]> $convertedArgs */
+        $convertedArgs = $this->convertArgumentsToPlainArrays($args);
+        return new self(array_udiff_assoc($this->data, ...$convertedArgs));
     }
 
     /**
-     * @param (RA|array|callable) ...$args
-     *
-     * @return RA
+     * @param RA|array<mixed>|callable ...$args
      */
-    public function udiffUassoc(...$args): self
+    public function udiffUassoc(self|array|callable ...$args): self
     {
-        return new self(array_udiff_uassoc($this->data, ...$this->convertArgumentsToPlainArrays($args)));
+        /** @var array<mixed[]> $convertedArgs */
+        $convertedArgs = $this->convertArgumentsToPlainArrays($args);
+        return new self(array_udiff_uassoc($this->data, ...$convertedArgs));
     }
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function udiff(...$args): self
     {
@@ -971,8 +735,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function uintersectAssoc(...$args): self
     {
@@ -981,8 +743,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function uintersectUassoc(...$args): self
     {
@@ -991,19 +751,12 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param (RA|callable)[] ...$args
-     *
-     * @return RA
      */
     public function uintersect(...$args): self
     {
         return new self(array_uintersect($this->data, ...$this->convertArgumentsToPlainArrays($args)));
     }
 
-    /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     */
     public function unique(int $sortFlags = SORT_STRING): self
     {
         return new self(array_unique($this->data, $sortFlags));
@@ -1011,8 +764,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @param mixed[] ...$args
-     *
-     * @return RA
      */
     public function unshift(...$args): self
     {
@@ -1020,45 +771,24 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
-    /**
-     * @return RA
-     */
     public function values(): self
     {
         return new self(array_values($this->data));
     }
 
-    /**
-     * @param callable   $callback
-     * @param mixed|null $payload
-     *
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
-    public function walkRecursive(callable $callback, $payload = null): self
+    public function walkRecursive(callable $callback, mixed $payload = null): self
     {
         \Safe\array_walk_recursive($this->data, $callback, $payload);
         return $this;
     }
 
-    /**
-     * @param callable   $callback
-     * @param mixed|null $payload
-     *
-     * @return RA
-     */
-    public function walk(callable $callback, $payload = null): self
+    public function walk(callable $callback, mixed $payload = null): self
     {
         array_walk($this->data, $callback, $payload);
         return $this;
     }
 
     /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function arsort(int $sortFlags = SORT_REGULAR): self
@@ -1068,10 +798,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function asort(int $sortFlags = SORT_REGULAR): self
@@ -1080,18 +806,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function end()
+    public function end(): mixed
     {
         return end($this->data);
     }
 
     /**
      * @param mixed $needle
-     *
-     * @return bool
      */
     public function contains($needle): bool
     {
@@ -1099,10 +820,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function krsort(int $sortFlags = SORT_REGULAR): self
@@ -1112,10 +829,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function ksort(int $sortFlags = SORT_REGULAR): self
@@ -1124,44 +837,24 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
-    /**
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
     public function natcasesort(): self
     {
-        \Safe\natcasesort($this->data);
+        natcasesort($this->data);
         return $this;
     }
 
-    /**
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
     public function natsort(): self
     {
-        \Safe\natsort($this->data);
+        natsort($this->data);
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function prev()
+    public function prev(): mixed
     {
         return prev($this->data);
     }
 
-    /**
-     * @param mixed $start
-     * @param mixed $end
-     * @param int   $step
-     *
-     * @return RA
-     */
-    public function range($start, $end, $step = 1): self
+    public function range(float|int|string $start, float|int|string $end, int $step = 1): self
     {
         $this->data = range($start, $end, $step);
         return $this;
@@ -1175,22 +868,13 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return reset($this->data);
     }
 
-    /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
     public function rsort(int $sortFlags = SORT_REGULAR): self
     {
-        \Safe\rsort($this->data, $sortFlags);
+        rsort($this->data, $sortFlags);
         return $this;
     }
 
     /**
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function shuffle(): self
@@ -1200,10 +884,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param int $sortFlags
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function sort(int $sortFlags = SORT_REGULAR): self
@@ -1212,37 +892,19 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this;
     }
 
-    /**
-     * @param callable $callback
-     *
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
     public function uasort(callable $callback): self
     {
-        \Safe\uasort($this->data, $callback);
+        uasort($this->data, $callback);
         return $this;
     }
 
-    /**
-     * @param callable $callback
-     *
-     * @return RA
-     *
-     * @throws \Safe\Exceptions\ArrayException
-     */
     public function uksort(callable $callback): self
     {
-        \Safe\uksort($this->data, $callback);
+        uksort($this->data, $callback);
         return $this;
     }
 
     /**
-     * @param callable $callback
-     *
-     * @return RA
-     *
      * @throws \Safe\Exceptions\ArrayException
      */
     public function usort(callable $callback): self
@@ -1252,10 +914,6 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param string $delimiter
-     *
-     * @return string
-     *
      * @throws \Safe\Exceptions\StringsException
      */
     public function implode(string $delimiter = '', bool $recursive = self::REGULAR): string
@@ -1264,11 +922,9 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
             /** @var string[] $data */
             $data = [];
             foreach ($this->data as $key => $value) {
-                if ($value instanceof self) {
-                    $data[$key] = \Safe\sprintf('{%s}', $value->implode($delimiter, $recursive));
-                } else {
-                    $data[$key] = $value;
-                }
+                $data[$key] = $value instanceof self
+                    ? \Safe\sprintf('{%s}', $value->implode($delimiter, $recursive))
+                    : $value;
             }
             return implode($delimiter, $data);
         }
@@ -1277,246 +933,150 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
 
     // Aliases
 
-    /**
-     * @param mixed $key
-     *
-     * @return bool
-     */
-    public function keyExists($key): bool
+    public function keyExists(int|string $key): bool
     {
         return $this->offsetExists($key);
     }
 
-    /**
-     * @param mixed $needle
-     *
-     * @return bool
-     */
-    public function has($needle): bool
+    public function has(mixed $needle): bool
     {
         return $this->contains($needle);
     }
 
-    /**
-     * @param mixed $needle
-     *
-     * @return bool
-     */
-    public function hasValue($needle): bool
+    public function hasValue(mixed $needle): bool
     {
         return $this->contains($needle);
     }
 
-    /**
-     * @param mixed $key
-     *
-     * @return bool
-     */
-    public function hasKey($key): bool
+    public function hasKey(int|string $key): bool
     {
         return $this->offsetExists($key);
     }
 
-    /**
-     * @return mixed
-     */
-    public function pos()
+    public function pos(): mixed
     {
         return $this->current();
     }
 
-    /**
-     * @return int
-     */
     public function size(): int
     {
         return $this->count();
     }
 
-    /**
-     * @return int
-     */
     public function length(): int
     {
         return $this->count();
     }
 
     /**
-     * @param mixed $offset
-     *
-     * @return mixed
-     *
      * @throws RAException
      */
-    public function get($offset = null)
+    public function get(int|string $offset = null): mixed
     {
         if (null === $offset) {
             return $this->current();
-        } else {
-            return $this->offsetGet($offset);
         }
+        return $this->offsetGet($offset);
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     *
-     * @return RA
-     */
-    public function set($offset, $value): self
+    public function set(int|string|null $offset, mixed $value): self
     {
         $this->offsetSet($offset, $value);
         return $this;
     }
 
     /**
-     * @param mixed $offset
-     *
-     * @return RA
-     *
      * @throws RAException
      */
-    public function unset($offset): self
+    public function unset(int|string $offset): self
     {
         $this->offsetUnset($offset);
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function previous()
+    public function previous(): mixed
     {
         return $this->prev();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCurrentIndex()
+    public function getCurrentIndex(): mixed
     {
         return $this->key();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCurrentKey()
+    public function getCurrentKey(): mixed
     {
         return $this->key();
     }
 
     /**
      * @param mixed[] ...$items
-     *
-     * @return RA
      */
     public function append(...$items): self
     {
         return $this->push(...$items);
     }
 
-    /**
-     * @return RA
-     */
     public function aggregateValues(): self
     {
         return $this->countValues();
     }
 
-    /**
-     * @return RA
-     */
     public function getKeys(): self
     {
         return $this->keys();
     }
 
-    /**
-     * @return float|int
-     */
-    public function getProduct()
+    public function getProduct(): float|int
     {
         return $this->product();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRandomEntry()
+    public function getRandomEntry(): mixed
     {
         return $this->random();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRandomValue()
+    public function getRandomValue(): mixed
     {
         return $this->random();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRandomItem()
+    public function getRandomItem(): mixed
     {
         return $this->random();
     }
 
-    /**
-     * @param mixed $needle
-     *
-     * @return mixed|null
-     */
-    public function find($needle)
+    public function find(mixed $needle): mixed
     {
         return $this->search($needle);
     }
 
-    /**
-     * @return float|int
-     */
-    public function getSum()
+    public function getSum(): float|int
     {
         return $this->sum();
     }
 
-    /**
-     * @return RA
-     */
     public function getValues(): self
     {
         return $this->values();
     }
 
-    /**
-     * @return RA
-     */
     public function entries(): self
     {
         return $this->values();
     }
 
-    /**
-     * @return RA
-     */
     public function getEntries(): self
     {
         return $this->values();
     }
 
-    /**
-     * @return RA
-     */
     public function items(): self
     {
         return $this->values();
     }
 
-    /**
-     * @return RA
-     */
     public function getItems(): self
     {
         return $this->values();
@@ -1538,14 +1098,26 @@ final class RA implements \Countable, \ArrayAccess, \Iterator
         return $this->end();
     }
 
-    /**
-     * @param string $delimiter
-     * @param bool   $recursive
-     *
-     * @return string
-     */
     public function join(string $delimiter = '', bool $recursive = self::REGULAR): string
     {
         return $this->implode($delimiter, $recursive);
+    }
+
+    // helpers
+
+    /**
+     * @template T
+     * @param array<int|string, T> $arrays
+     *
+     * @return array<array<mixed>|T>
+     */
+    private function convertArgumentsToPlainArrays(array $arrays): array
+    {
+        return array_map(function ($entry) {
+            if ($entry instanceof self) {
+                return $entry->toArray();
+            }
+            return $entry;
+        }, $arrays);
     }
 }

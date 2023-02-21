@@ -16,12 +16,12 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "thecodingmachine/safe": "^1.0"
+        "php": ">=8.1",
+        "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
-        "wernerdweight/cs": "^1.4",
-        "thecodingmachine/phpstan-safe-rule": "^1.0"
+        "wernerdweight/cs": "^3.0",
+        "thecodingmachine/phpstan-safe-rule": "^1.2"
     },
     "suggest": {},
     "autoload": {
@@ -31,12 +31,10 @@
     },
     "target-dir": "WernerDweight/RA",
     "scripts": {
-        "fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config vendor/wernerdweight/cs/src/ecs.yaml --fix",
+        "fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config ecs.php --fix",
         "phpstan": "phpstan analyse ./RA.php ./Exception/ ./Tests/ --level max",
         "phpmd": "phpmd ./RA.php text vendor/wernerdweight/cs/phpmd.xml",
-        "ecs": "ecs check ./RA.php ./Exception/ --config vendor/wernerdweight/cs/src/ecs.yaml",
-        "ecs-fix": "ecs check ./RA.php ./Exception/ ./Tests/ --config vendor/wernerdweight/cs/src/ecs.yaml --fix",
-        "phpunit": "phpunit",
-        "victor": "victor"
+        "ecs": "ecs check ./RA.php ./Exception/ --config ecs.php",
+        "phpunit": "phpunit"
     }
 }
